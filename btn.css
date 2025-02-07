@@ -21,40 +21,30 @@
 .form-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background-color: #f0eff7;
-    padding: 16px;
+    padding: 12px 16px;
     border-radius: 16px;
     width: 100%;
     max-width: 350px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #20c1c1; /* Warna biru muda */
 }
 
-/* Bagian kiri: ikon + teks */
-.form-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-    color: #3a1e72;
-    font-size: 18px;
-}
-
-/* Ikon */
-.form-left img {
+/* Bagian kiri: ikon */
+.form-logo {
     width: 32px;
     height: 32px;
     border-radius: 50%;
+    margin-right: 10px;
 }
 
-/* Dropdown panah kecil */
-.form-left span {
-    font-size: 14px;
-}
-
-/* Bagian kanan: saldo */
-.form-right {
-    font-size: 20px;
+/* Input form */
+.form-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 18px;
     font-weight: bold;
     color: #3a1e72;
+    outline: none;
 }
