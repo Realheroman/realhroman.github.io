@@ -1,0 +1,60 @@
+.btn-me {
+    display: inline-block;
+    background-color: #20c1c1;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-me:hover {
+    background-color: #1aa3a3;
+} 
+
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0eff7;
+    padding: 16px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Bagian kiri: ikon + teks */
+.form-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: #3a1e72;
+    font-size: 18px;
+}
+
+/* Ikon */
+.form-left img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* Dropdown panah kecil */
+.form-left span {
+    font-size: 14px;
+}
+
+/* Bagian kanan: saldo */
+.form-right {
+    font-size: 20px;
+    font-weight: bold;
+    color: #3a1e72;
+}
