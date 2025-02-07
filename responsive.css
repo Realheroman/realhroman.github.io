@@ -1,0 +1,227 @@
+@media (max-width: 499px) {
+    .navbar-toggler {
+        border: none !important;
+        color: #fff !important;
+    }
+
+    .nav_logo {
+        max-width: 120px;
+    }
+
+    .header_nav {
+        padding: 8px 0 !important;
+    }
+
+    .banner_Img {
+        padding-top: 0;
+    }
+
+    .display_banner {
+        padding: 70px 15px;
+    }
+
+    .dapes.left {
+        left: 0;
+    }
+
+    .dapes.right {
+        right: 0
+    }
+
+    .dape-panda {
+        width: 400px;
+    }
+
+    .display_cont {
+        padding-left: 15px;
+    }
+
+    .display_banner p:nth-child(1) {
+        font-size: 35px;
+    }
+
+    .display_banner p {
+        font-size: 27px;
+    }
+
+    #display {
+        padding-bottom: 50px;
+    }
+
+    #banner_div .row,
+    #features .row,
+    #roadmap .row,
+    #perks .row,
+    #chart_Section .row {
+        padding: 0 20px;
+    }
+
+    .fixed-header {
+        position: fixed !important;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 199999;
+        border-bottom: 1px solid #fff;
+    }
+
+    #banner_div {
+        padding-top: 90px;
+    }
+
+}
+
+@media (max-width: 1199px) {
+    .navbar-collapse {
+        width: 100%;
+        padding: 20px 0;
+        z-index: 999;
+        left: 0;
+        position: relative;
+        text-align: center;
+    }
+
+    .banner_Content h4 {
+        font-size: 59px;
+    }
+
+    .banner_Content>p:nth-child(2),
+    .features_head,
+    .feature_content .feature_pt {
+        font-size: 30px;
+    }
+
+    .get_started {
+        margin-top: 20px;
+    }
+
+    .banner_Content {
+        padding: 70px 0;
+    }
+
+    #banner_div,
+    #features,
+    #perks,
+    #roadmap {
+        height: auto;
+    }
+
+    #features {
+        padding: 35px 0;
+    }
+
+    .banner_Content p:nth-child(3),
+    .feature_desc,
+    .Social_Section .updt,
+    .Social_Section .desc {
+        font-size: 18px;
+    }
+
+    .perks_Img img {
+        padding-top: 30px;
+        width: 400px;
+    }
+
+    .divider_1 {
+        top: 35px;
+    }
+
+    .perks_Head h6,
+    #roadmap p.roadmap_head,
+    #roadmap h6,
+    p.contact_sec,
+    .chart_Headline h4 {
+        font-size: 40px;
+    }
+
+    .feature_card {
+        margin: 20px 0;
+    }
+
+    .cont {
+        padding: 0;
+    }
+
+    .contact_section {
+        padding: 20px;
+    }
+
+    .share_icons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #roadmap .col-lg-6.col-12:nth-of-type(odd) {
+        border-right: none;
+    }
+
+    .center-point1:after,
+    .top-point1:before {
+        display: none;
+    }
+
+    #roadmap {
+        padding-bottom: 40px;
+    }
+
+    .Arrow_2 .roadmap_phase {
+        left: -50px;
+    }
+
+    .center-point1,
+    .center-point2 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .Arrow_Div {
+        margin: 20px 7px;
+    }
+
+    .Arrow_Div.Arrow_2 .text-end {
+        text-align: unset !important;
+    }
+
+    .chart_Img .tokenomics_img {
+        width: 350px;
+    }
+
+    .pt-xs-3 {
+        padding-top: 30px;
+    }
+
+    #faq .row {
+        gap: 20px;
+    }
+}
+
+@media (min-width: 767px) and (max-width: 1199px) {
+    .get_started {
+        margin-top: 0;
+    }
+
+    .container.px-5 {
+        padding: 0 !important;
+    }
+
+    a.get_started_button {
+        padding: 10px 17px;
+    }
+
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding: 0 !important;
+    }
+
+    .Arrow_Div {
+        min-height: 320px;
+    }
+
+    .feature_card {
+        min-height: 400px;
+    }
+
+    .display_banner p:nth-child(1),
+    .display_banner p {
+        max-width: unset;
+    }
+}
