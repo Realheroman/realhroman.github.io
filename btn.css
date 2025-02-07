@@ -48,29 +48,3 @@
     color: #3a1e72;
     outline: none;
 }
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.form-input {
-    width: 100%;
-    padding-right: 60px; /* Memberikan ruang agar teks tidak tertutup tombol */
-    height: 40px;
-    box-sizing: border-box;
-}
-
-.btn-me {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #ffcc00;
-    color: #000;
-    font-size: 14px;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
-}
