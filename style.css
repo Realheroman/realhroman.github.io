@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Poppins',sans-serif;
+    font-family:RumRaisin;
 }
 
 html,
@@ -16,8 +16,8 @@ img {
 }
 
 @font-face {
-    font-family: 'Poppins',sans-serif;
-    src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    font-family: 'RumRaisin';
+    src: url('./font/RumRaisin-Regular.ttf');
 }
 
 @keyframes fadeIn {
