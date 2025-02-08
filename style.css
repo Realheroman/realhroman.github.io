@@ -335,8 +335,8 @@ a.get_started_button:hover {
 .perks_card {
     display: flex;
     align-items: center;
-    background: #1b4d0d;
-    border: 1px solid #fbe354;
+    background:deepskyblue;
+    border: 1px solid lightskyblue;
     padding: 15px 20px;
     border-radius: 13px;
     gap: 20px;
@@ -602,7 +602,7 @@ input#myInput {
 /* faq */
 
 #faq {
-    background-color: #0a5103 !important;
+    background-color: deepskyblue !important;
     padding-bottom: 100px;
 }
 
