@@ -156,7 +156,7 @@ img {
 }
 
 .header_nav {
-    background-color: gray !important;
+    background-color: purple !important;
     padding: 15px 0 !important;
 
 }
@@ -169,7 +169,7 @@ img {
 }
 
 .navbar-nav li>a:hover {
-    color: #fbe354;
+    color: gray;
 }
 
 .navbar-nav li>a:after {
@@ -177,7 +177,7 @@ img {
     display: block;
     width: 0;
     height: 2px;
-    background: #fbe354;
+    background: gray;
     transition: width .3s;
 }
 
@@ -189,7 +189,7 @@ img {
 a.get_started_button {
     font-size: 20px;
     color: #000;
-    background: #fbe354;
+    background: gray;
     text-decoration: none;
     padding: 10px 20px;
     font-weight: 400;
