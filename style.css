@@ -646,7 +646,7 @@ button.accordion-button {
 .collapse.show,
 .accordion-collapse.collapse,
 .accordion-body {
-    background-color: #55d463 !important;
+    background-color: lightskyblue !important;
 }
 
 /* Scroll to Top */
