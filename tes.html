@@ -1,17 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockonix - Airdrop & Presale</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+    .navbar {
+      background: linear-gradient(145deg, #d4af37, #b8860b);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      color: #121212 !important;
+    }
+    .nav-link {
+      color: #fff !important;
+    }
+    .hero-section {
+      background: linear-gradient(to right, #b8860b, #d4af37);
+      color: #121212;
+      padding: 100px 0;
+      text-align: center;
+    }
+    .btn-custom {
+      background-color: #d4af37;
+      color: #121212;
+      font-weight: bold;
+      border: 1px solid #b8860b;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-custom:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.6);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .box-style {
+      background: linear-gradient(145deg, #333, #000);
+      border: 1px solid #d4af37;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    footer {
+      background: #000;
+      color: #d4af37;
+      text-align: center;
+      padding: 20px 0;
+    }
+    /* Roadmap Animation */
+    .roadmap-container {
+      overflow: hidden;
+      position: relative;
+      white-space: nowrap;
+    }
+    .roadmap-track {
+      display: flex;
+      animation: scroll-left 20s linear infinite;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .roadmap-item {
+      flex: 0 0 auto;
+      background: #1a1a1a;
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      border-radius: 10px;
+      padding: 20px;
+      margin-right: 20px;
+      text-align: center;
+      width: 250px;
+    }
+    #follow-us {
+  padding: 50px 0;
+}
 
-  <title>PoodleDog Swap</title>
+.social-icons-container {
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
 
-  
-  
-  
+.social-icons {
+  display: flex;
+  animation: scroll-left 15s linear infinite;
+}
+
+.social-icon {
+  font-size: 50px;
+  color: #d4af37;
+  transition: transform 0.3s, color 0.3s;
+  margin: 0 15px;
+}
+
+.social-icon:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+#follow-us .section-title-wrapper h2 {
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+  </style>
+</head>
+<body>
+ <!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand fs-4" href="#">Blockonix</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#about">About</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#airdrop">Airdrop</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#presale">Presale</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#roadmap">Roadmap</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#allocation">Allocation</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Hero Section -->
+<div class="hero-section" style="background-color: #1a1a1a; padding: 80px 0;">
+  <div class="container text-center text-light">
+    <!-- Logo Blockonix -->
+    <div class="logo-container mb-4">
+      <img src="bzt.png" alt="Blockonix Logo" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+    
+    <h1 style="font-size: 6vw; font-weight: bold; text-transform: uppercase;">Welcome to Blockonix</h1>
+    <p style="font-size: 2vw;">Your gateway to a global meme token revolution.</p>
+    <p><strong>Please note that all participants claiming the airdrop must use Trust Wallet, Binance Wallet, or MetaMask with Binance Smart Chain (BSC) for a smooth experience!</strong></p>
+    <a href="#airdrop" class="btn btn-custom btn-lg">Claim Airdrop</a>
+    <a href="#presale" class="btn btn-outline-light btn-lg">Join Presale</a>
+  </div>
+</div>
+<!-- About Section -->
+<section id="about" class="section" style="padding-left: 0; padding-right: 0;">
+  <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-bottom: 0;">
+        About Blockonix
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 20px; background: #121212; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <p style="font-size: 1.2rem; color: #fff; text-align: center;">Blockonix ($BLX) is a meme token on Binance Smart Chain, revolutionizing crypto ownership with unique airdrops and presales.</p>
+      <p style="font-size: 1rem; color: #fff; text-align: center; margin-top: 20px;">We are creating a new path in the world of meme tokens with the help of an enthusiastic community. Our goal is to provide exciting opportunities and value to all participants. Join Blockonix today and be part of this innovative crypto revolution!</p>
+    </div>
+  </div>
+</section><br><br>
 </head>
 
 <body>
