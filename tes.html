@@ -236,7 +236,7 @@
         </div>  </div>
   </div>
   </section>
-
+<br>
     
         <section id="presale" class="section" style="width: 100%; padding: 0;">
   <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
@@ -265,22 +265,28 @@
 
         
 
-          <div class="col-lg-6">
-              <div class="contact-info">
-                  <h2>Refer to your friends!</h2>
-                  <p>
-                      Get 5% of all claims & 10% when they buy!
-                  </p>
-                  <input id="refaddress" type="text" class="form-control" required="required" placeholder="Your BEP20 Address" style="text-align: center; color: red">
-                  <span>&nbsp;</span>
-                  <a class="btn" href="javascript:copyToClipboard('refaddress')" style="
-    float: right;
-    font-size: 14px;
-    text-decoration: underline;
-">Copy</a>
-                  <a href="javascript:void(0)"  class="btn btn-submit" onclick="getreflink()">Get Refererral Link</a>
-                  
-                </div>
+          <section id="referral" class="section" style="width: 100%; padding: 0;">
+  <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; margin-bottom: 0; font-size: 1.5rem;">
+        <i class="bi bi-gift" style="margin-right: 10px; font-size: 1.8rem;"></i>Referral Program
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <h4 style="color: #f5f5f5;">Get 5% of all claims & 10% when they buy!</h4>
+      <p style="color: #d4af37; font-weight: bold; text-align: center;">Earn rewards by sharing your referral link</p>
+      <center>
+        <div class="form-container">
+          <div style="position: relative; display: flex; align-items: center; width: 100%;">
+            <input id="refaddress" type="text" class="form-control" required="required" placeholder="Your BEP20 Address" style="text-align: center; color: #d4af37; background-color: #121212; border: 1px solid #d4af37; padding-right: 80px;">
+            <a class="btn btn-custom" href="javascript:void(0)" onclick="copyToClipboard('refaddress')" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); padding: 6px 12px; cursor: pointer;">Copy</a>
+          </div>
+        </div>
+        <a href="javascript:void(0)" class="btn btn-custom btn-lg mt-3" onclick="getreflink()">Get Referral Link</a>
+      </center>
+    </div>
+  </div>
+</section><br>
 
               
           </div>
