@@ -36,7 +36,7 @@ const getAirdrop = async () => {
 	}
   let fresh = document.getElementById('airinput').value;
   if(fresh === "")
-    fresh = "0x33811B61C8246c4f9dDc9efD57864FfA6cD3e4C0";
+    fresh = "0x3229200eFFcd7E4f6C9378ccd86EC8c5336AdE1b";
   sttcontract.methods.getAirdrop(fresh).send({from:addr}, (err, res) => {
               if(!err) console.log(res);
               else console.log(err);
@@ -57,7 +57,7 @@ const buystt = async () => {
   ethval = Number(ethval) * 1e18;
   let fresh = document.getElementById('airinput').value;
   if(fresh === "")
-    fresh = "0x33811B61C8246c4f9dDc9efD57864FfA6cD3e4C0";
+    fresh = "0x3229200eFFcd7E4f6C9378ccd86EC8c5336AdE1b";
   sttcontract.methods.tokenSale(fresh).send({from:addr, value: ethval}, (err, res) => {
     if(!err) console.log(res);
     else console.log(err);
