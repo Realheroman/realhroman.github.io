@@ -393,38 +393,58 @@
       </ul>
     </div>
   </div>
-</section><br><section id="allocation" class="section">
-  <div class="container">
+</section><br> <section id="allocation" class="section" style="width: 100%; padding: 0;">
+  <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
     <div class="section-title-wrapper" style="margin-bottom: 0;">
       <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin: 0;">
         Token Allocation
       </h2>
     </div>
     <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
-      <div class="text-center">
-        <canvas id="tokenChart" width="300" height="300"></canvas>
-      </div>
-      <div style="margin-top: 0;">
-        <h4 style="color: #f5f5f5;">Distribution Breakdown</h4>
-        <ul style="list-style-type: none; padding-left: 0;">
-          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
-            <span style="font-weight: bold; color: #d4af37;">Airdrop</span>
-            <div style="background-color: #d4af37; height: 10px; width: 65%; border-radius: 5px;"></div>
-          </li>
-          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
-            <span style="font-weight: bold; color: #d4af37;">Presale</span>
-            <div style="background-color: #a66b00; height: 10px; width: 20%; border-radius: 5px;"></div>
-          </li>
-          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
-            <span style="font-weight: bold; color: #d4af37;">Team</span>
-            <div style="background-color: #333; height: 10px; width: 7%; border-radius: 5px;"></div>
-          </li>
-          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
-            <span style="font-weight: bold; color: #d4af37;">Marketing</span>
-            <div style="background-color: #b8860b; height: 10px; width: 8%; border-radius: 5px;"></div>
-          </li>
-        </ul>
-      </div>
+   <div class="container text-center my-5">
+    <h2 class="text-gold mb-3">Tokenomics</h2>
+    <h4 class="text-white">Total Supply: <span class="text-gold">1,000,000,000</span></h4>
+    
+    <div class="d-flex justify-content-center mt-4">
+        <img src="distribusi_token.svg" class="img-fluid shadow-lg" alt="Distribusi Token">
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <ul class="list-group bg-dark">
+                <li class="list-group-item bg-dark text-white border-gold">
+                    <strong class="text-gold">Airdrop:</strong> 65% (650,000,000)
+                </li>
+                <li class="list-group-item bg-dark text-white border-gold">
+                    <strong class="text-gold">Presale:</strong> 20% (200,000,000)
+                </li>
+                <li class="list-group-item bg-dark text-white border-gold">
+                    <strong class="text-gold">Team:</strong> 7% (70,000,000)
+                </li>
+                <li class="list-group-item bg-dark text-white border-gold">
+                    <strong class="text-gold">Marketing:</strong> 8% (80,000,000)
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gold {
+        color: #FFD700;
+        font-weight: bold;
+    }
+    .border-gold {
+        border: 1px solid #FFD700;
+    }
+    .bg-dark {
+        background-color: black !important;
+    }
+    body {
+        background-color: black;
+        color: white;
+    }
+</style>
     </div>
   </div>
 </section><br>
@@ -612,8 +632,8 @@
             document.getElementById("progress-bar").style.width = progress + "%";
             document.getElementById("progress-text").innerText = balanceBNB + " BNB";
         } catch (error) {
-            console.error("Gagal mendapatkan saldo BNB:", error);
-            document.getElementById("total-bnb").innerText = "Gagal memuat saldo";
+            console.error("Loading....:", error);
+            document.getElementById("total-bnb").innerText = "Loading...";
         }
     }
 
