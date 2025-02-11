@@ -536,7 +536,96 @@
     </div>
   </div>
 </section>
+<div class="container-fluid d-flex justify-content-center my-5">
+    <div class="swap-box">
+        <h2 class="text-gold text-center mb-3">Airdrop And Presale Time Ends</h2>
+        <div id="countdown" class="d-flex justify-content-center flex-wrap">
+            <div class="timer-box">
+                <span id="days" class="time">00</span>
+                <p class="label">Days</p>
+            </div>
+            <div class="timer-box">
+                <span id="hours" class="time">00</span>
+                <p class="label">Hours</p>
+            </div>
+            <div class="timer-box">
+                <span id="minutes" class="time">00</span>
+                <p class="label">Minutes</p>
+            </div>
+            <div class="timer-box">
+                <span id="seconds" class="time">00</span>
+                <p class="label">Seconds</p>
+            </div>
+        </div>
+    </div>
+</div>
 
+<style>
+    .swap-box {
+        background: rgba(255, 215, 0, 0.1);
+        border: 2px solid #FFD700;
+        border-radius: 15px;
+        padding: 20px;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.5);
+        text-align: center;
+    }
+    .text-gold {
+        color: #FFD700;
+        font-weight: bold;
+    }
+    body {
+        background-color: black;
+        color: white;
+    }
+    .timer-box {
+        background: rgba(255, 215, 0, 0.2);
+        border: 2px solid #FFD700;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        width: 120px;
+        margin: 10px;
+    }
+    .time {
+        font-size: 36px;
+        font-weight: bold;
+        color: #FFD700;
+        display: block;
+    }
+    .label {
+        font-size: 14px;
+        color: white;
+    }
+</style>
+
+<script>
+    function startCountdown() {
+        const countdownDate = new Date();
+        countdownDate.setMonth(countdownDate.getMonth() + 3);
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "<h3 class='text-gold text-center'>Time's Up!</h3>";
+                return;
+            }
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    }
+
+    document.addEventListener("DOMContentLoaded", startCountdown);
+</script>
               
           </div>
         </div>
