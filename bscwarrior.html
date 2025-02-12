@@ -641,7 +641,22 @@
   
   <script src="/main.js?v1.8"></script>
 
-  
+  <script>const img = document.createElement("img");
+img.src = "warrior1.png";
+img.style.position = "fixed";
+img.style.bottom = "0";
+img.style.left = "0";
+img.style.width = "100px";
+img.style.height = "auto";
+img.style.transition = "transform 1s ease-in-out";
+document.body.appendChild(img);
+
+function moveImage() {
+    const x = Math.random() * (window.innerWidth - 100);
+    img.style.transform = `translateX(${x}px)`;
+}
+
+setInterval(moveImage, 1000);</script>
   
 </body>
 
