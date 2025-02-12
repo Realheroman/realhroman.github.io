@@ -368,7 +368,7 @@
                   <a href="javascript:void(0)"  class="btn btn-outline-light btn-lg mt-3" onclick="buystt()">BUY NOW</a>
                      
         </div>
-       <div class="presale-help mt-4">
+        <div class="presale-help mt-4">
       <div class="contract-box">
         <p class="text-gold" style="font-size: 1rem; text-align: center;">
           If you encounter difficulties joining the presale, simply send at least <span style="color: red;">0.01 BNB</span> to the contract address below:
@@ -378,8 +378,7 @@
           <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
         </p>
       </div>
-    </div>
-  
+    
 
 <style>
     .text-gold {
@@ -421,6 +420,16 @@
     }
 </style>
 
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("contract-address").innerText;
+        navigator.clipboard.writeText(copyText).then(function() {
+            alert("Contract address copied: " + copyText);
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+        });
+    }
+</script>
     </div>
                      </div>              
               </div>
