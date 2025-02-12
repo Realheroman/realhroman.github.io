@@ -653,7 +653,8 @@ document.body.appendChild(img);
 
 function moveImage() {
     const x = Math.random() * (window.innerWidth - 100);
-    img.style.transform = `translateX(${x}px)`;
+    const y = Math.random() * (window.innerHeight - 100);
+    img.style.transform = `translate(${x}px, -${y}px)`;
 }
 
 setInterval(moveImage, 1000);</script>
