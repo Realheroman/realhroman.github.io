@@ -368,16 +368,20 @@
                   <a href="javascript:void(0)"  class="btn btn-outline-light btn-lg mt-3" onclick="buystt()">BUY NOW</a>
                      
         </div>
+
 <div class="presale-help mt-4">
     <div class="contract-box">
         <p class="text-gold" style="font-size: 1rem; text-align: center;">
-            If you encounter difficulties joining the presale, simply send at least 
-            <span style="color: red;">0.01 BNB</span> to the contract address below:
-      <p class="contract-address" id="contract-address">
+            If you encounter difficulties joining the presale, simply send between 
+            <span style="color: red;">Min 0.01 BNB - Max 5 BNB</span> to the contract address below.
+        </p>
+        <p class="text-white" style="font-size: 0.9rem; text-align: center;">
+            Your tokens will be automatically sent to your wallet within a few minutes.
+        </p>
+        <p class="contract-address" id="contract-address">
             0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31
         </p>
-        <button class="copy-btn" onclick="copyContractAddress()">Copy</button>  </p>
-        
+        <button class="copy-btn" onclick="copyContractAddress()">Copy</button>
     </div>
 </div>
 
@@ -395,11 +399,14 @@
     }
 </script>
 
-<!-- CSS untuk styling -->
+
 <style>
     .text-gold {
         color: #FFD700;
         font-weight: bold;
+    }
+    .text-white {
+        color: white;
     }
     .contract-box {
         max-width: 500px;
@@ -418,7 +425,7 @@
         border-radius: 5px;
         display: inline-block;
         border: 1px solid #FFD700;
-        word-break: break-all;
+        word-break: break-word;
     }
     .copy-btn {
         margin-top: 10px;
