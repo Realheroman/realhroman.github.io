@@ -483,6 +483,15 @@
             </ul>
         </div>
     </div>
+
+    <div class="contract-address mt-5 text-center">
+        <h3 class="text-gold">Contract Address</h3>
+        <p class="contract-box">
+            <span id="contract-address">0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31</span>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+        </p>
+    </div>
+
 </div>
 
 <style>
@@ -500,8 +509,43 @@
         background-color: black;
         color: white;
     }
+    .contract-address {
+        background: rgba(255, 215, 0, 0.1);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #FFD700;
+        display: inline-block;
+    }
+    .contract-box {
+        font-size: 1.2em;
+        color: #FFD700;
+        background: black;
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+    .copy-btn {
+        margin-left: 10px;
+        padding: 5px 10px;
+        background: #FFD700;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .copy-btn:hover {
+        background: white;
+        color: black;
+    }
 </style>
-    </div>
+
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("contract-address").innerText;
+        navigator.clipboard.writeText(copyText);
+    }
+</script>
   </div>
 </section><br>
 
