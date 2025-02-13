@@ -60057,4 +60057,81 @@
   arguments[4][287][0].apply(exports,arguments)
   },{"dup":287}]},{},[1])(1)
   });
-  
+
+
+import WalletConnectProvider from "https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider/dist/umd/index.min.js";
+import Web3Modal from "https://cdn.jsdelivr.net/npm/web3modal/dist/index.js";
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js";
+
+// WalletConnect V2 configuration
+const providerOptions = {
+    walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+            rpc: { 56: "https://bsc-dataseed.binance.org/" } // BSC Mainnet
+        }
+    }
+};
+
+// Initialize Web3Modal
+const web3Modal = new Web3Modal({
+    cacheProvider: true,
+    providerOptions
+});
+
+// Function to connect using WalletConnect V2
+async function connectWalletConnect() {
+    try {
+        const instance = await web3Modal.connect();
+        const provider = new ethers.providers.Web3Provider(instance);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+
+        console.log("Connected via WalletConnect:", address);
+        document.getElementById("walletAddress").innerText = `Connected: ${address}`;
+        document.getElementById("connectWalletConnect").innerText = "Connected";
+
+        // Save connection status
+        localStorage.setItem("walletAddress", address);
+    } catch (error) {
+        console.error("Connection failed:", error);
+    }
+}
+
+// Function to connect using MetaMask
+async function connectMetaMask() {
+    if (window.ethereum) {
+        try {
+            await window.ethereum.request({ method: "eth_requestAccounts" });
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+
+            console.log("Connected via MetaMask:", address);
+            document.getElementById("walletAddress").innerText = `Connected: ${address}`;
+            document.getElementById("connectMetaMask").innerText = "Connected";
+
+            // Save connection status
+            localStorage.setItem("walletAddress", address);
+        } catch (error) {
+            console.error("Connection failed:", error);
+        }
+    } else {
+        alert("MetaMask is not installed. Please install it first!");
+    }
+}
+
+// Function to check wallet connection status on page reload
+function checkWalletConnection() {
+    const savedAddress = localStorage.getItem("walletAddress");
+    if (savedAddress) {
+        document.getElementById("walletAddress").innerText = `Connected: ${savedAddress}`;
+        document.getElementById("connectWalletConnect").innerText = "Connected";
+        document.getElementById("connectMetaMask").innerText = "Connected";
+    }
+}
+
+// Ensure connection status is checked when the page loads
+document.addEventListener("DOMContentLoaded", function () {
+    checkWalletConnection();
+});
