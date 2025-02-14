@@ -10,7 +10,6 @@ let referrer = null;
 function getReferrer() {
     const urlParams = new URLSearchParams(window.location.search);
     let urlRef = urlParams.get("ref");
-
     let manualRef = document.getElementById("refWallet")?.value.trim();
 
     if (manualRef && web3.utils.isAddress(manualRef)) {
@@ -21,7 +20,7 @@ function getReferrer() {
         referrer = "0x0000000000000000000000000000000000000000"; // Default referral
     }
 
-    document.getElementById("refWallet").value = referrer; // Display the referral address
+    document.getElementById("refWallet").value = referrer; // Display referral address
 }
 
 // 🔗 Connect Wallet
@@ -87,7 +86,8 @@ async function buyToken() {
 // 🔗 Generate Referral Link
 function generateReferralLink() {
     if (!userAccount) return alert("Connect wallet first!");
-    let refLink = `${window.location.origin}?ref=${userAccount}`;
+    let websiteURL = "https://yourwebsite.com"; // Replace with your actual website URL
+    let refLink = `${websiteURL}?ref=${userAccount}`;
     document.getElementById("refLink").value = refLink;
 }
 
