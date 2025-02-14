@@ -23,7 +23,7 @@ async function connectWallet() {
         userAccount = accounts[0];
         document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
     } catch (error) {
-        console.error("User denied wallet connection");
+        console.error("Wallet connection failed", error);
     }
 }
 
@@ -47,11 +47,13 @@ async function buyToken() {
     // Deteksi jaringan pengguna
     const networkId = await web3.eth.net.getId();
 
-    // Blokir transaksi jika di jaringan Ethereum
+    // Jika pengguna di Ethereum, tampilkan pop-up dan hentikan proses pembelian
     if (networkId === 1) {
-        return alert("⚠️ Token purchase is only available on BSC. Please switch to BSC Network.");
+        alert("❌ Token purchase is only available on BSC!\nPlease switch to Binance Smart Chain (BSC) to proceed.");
+        return; // Hentikan eksekusi fungsi, jangan lanjutkan transaksi
     }
 
+    // Jika pengguna di BSC, lanjutkan transaksi
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
     if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB");
