@@ -3,7 +3,7 @@ const contractABI = [{"constant":false,"inputs":[{"name":"_refer","type":"addres
 
 let web3;
 let userAccount = null;
-let referrer = null; // Variabel untuk menyimpan alamat referral
+let referrer = null; 
 
 // 🌟 Fungsi untuk membaca referral dari URL
 function getReferrerFromURL() {
@@ -22,8 +22,25 @@ async function connectWallet() {
         const accounts = await ethereum.request({ method: "eth_requestAccounts" });
         userAccount = accounts[0];
         document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
+
+        // Cek jaringan setelah koneksi wallet
+        checkNetwork();
     } catch (error) {
         console.error("Wallet connection failed", error);
+    }
+}
+
+// 🔎 Cek Jaringan & Blokir Tombol Jika Bukan BSC
+async function checkNetwork() {
+    const networkId = await web3.eth.net.getId();
+    
+    if (networkId !== 56) { // Jika bukan BSC
+        document.getElementById("buyToken").disabled = true;
+        document.getElementById("claimAirdrop").disabled = true;
+        alert("❌ Please switch to Binance Smart Chain (BSC) to use this feature.");
+    } else { // Jika di BSC
+        document.getElementById("buyToken").disabled = false;
+        document.getElementById("claimAirdrop").disabled = false;
     }
 }
 
@@ -40,31 +57,20 @@ async function claimAirdrop() {
     }
 }
 
-// 💰 Buy Token (Blokir jika pengguna menggunakan Ethereum)
+// 💰 Buy Token (Hanya Bisa di BSC)
 async function buyToken() {
     if (!userAccount) return alert("Connect wallet first!");
 
-    // Deteksi jaringan pengguna
-    const networkId = await web3.eth.net.getId();
-
-    // Jika pengguna di Ethereum, tampilkan pop-up dan hentikan proses pembelian
-    if (networkId === 1) {
-        alert("❌ Token purchase is only available on BSC!\nPlease switch to Binance Smart Chain (BSC) to proceed.");
-        return; // Hentikan eksekusi fungsi, jangan lanjutkan transaksi
-    }
-
-    // Jika pengguna di BSC, lanjutkan transaksi
-    const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
     if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB");
 
-    let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
     try {
         await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
             from: userAccount,
             value: web3.utils.toWei(bnbAmount, "ether")
         });
-        alert(`✅ Purchased ${tokenAmount} $BWAR`);
+        alert(`✅ Purchased ${bnbAmount * 10000000} Tokens`);
     } catch (error) {
         console.error(error);
         alert("Transaction failed!");
@@ -90,7 +96,7 @@ function copyReferralLink() {
 // 🔄 Update Token Amount When BNB Input Changes
 document.getElementById("bnbAmount").addEventListener("input", function () {
     let bnb = this.value;
-    let tokenAmount = bnb * 10000000; // 1 BNB = 10,000,000 $BWAR
+    let tokenAmount = bnb * 10000000; // 1 BNB = 10,000,000 Tokens
     document.getElementById("tokenAmount").innerText = tokenAmount.toLocaleString();
 });
 
@@ -101,5 +107,11 @@ document.getElementById("buyToken").addEventListener("click", buyToken);
 document.getElementById("generateRef").addEventListener("click", generateReferralLink);
 document.getElementById("copyRef").addEventListener("click", copyReferralLink);
 
-// 🌟 Load Referral Address on Page Load
-window.onload = getReferrerFromURL;
+// 🌟 Load Referral Address on Page Load & Cek Jaringan
+window.onload = function () {
+    getReferrerFromURL();
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        checkNetwork();
+    }
+};
