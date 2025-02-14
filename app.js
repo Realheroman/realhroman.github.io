@@ -30,23 +30,26 @@ async function connectWallet() {
     }
 }
 
-// 🔎 Cek Jaringan & Blokir Tombol Jika Bukan BSC
+// 🔎 Cek Jaringan & Blokir Tombol Jika di Ethereum
 async function checkNetwork() {
     const networkId = await web3.eth.net.getId();
     
-    if (networkId !== 56) { // Jika bukan BSC
+    if (networkId === 1) { // Jika pengguna di Ethereum Mainnet
         document.getElementById("buyToken").disabled = true;
         document.getElementById("claimAirdrop").disabled = true;
-        alert("❌ Please switch to Binance Smart Chain (BSC) to use this feature.");
-    } else { // Jika di BSC
+        alert("❌ Token purchase & airdrop claim are only available on Binance Smart Chain (BSC). Please switch to BSC.");
+    } else if (networkId === 56) { // Jika di BSC, aktifkan kembali tombol
         document.getElementById("buyToken").disabled = false;
         document.getElementById("claimAirdrop").disabled = false;
     }
 }
 
-// 🎁 Claim Airdrop
+// 🎁 Claim Airdrop (Hanya di BSC)
 async function claimAirdrop() {
     if (!userAccount) return alert("Connect wallet first!");
+    const networkId = await web3.eth.net.getId();
+    if (networkId !== 56) return alert("❌ Airdrop is only available on BSC. Please switch networks.");
+
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     try {
         await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
@@ -60,6 +63,8 @@ async function claimAirdrop() {
 // 💰 Buy Token (Hanya Bisa di BSC)
 async function buyToken() {
     if (!userAccount) return alert("Connect wallet first!");
+    const networkId = await web3.eth.net.getId();
+    if (networkId !== 56) return alert("❌ Token purchase is only available on BSC. Please switch networks.");
 
     let bnbAmount = document.getElementById("bnbAmount").value;
     if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB");
