@@ -4,15 +4,14 @@ const contractABI = [{"constant":false,"inputs":[{"name":"_refer","type":"addres
 
 let web3;
 let userAccount = null;
-let referrer = null; // Variabel untuk menyimpan alamat referral
+let referrer = null;
 
 // 🌟 Fungsi untuk membaca referral dari URL
 function getReferrerFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    referrer = urlParams.get("ref");
-    if (referrer) {
-        document.getElementById("refWallet").value = referrer; // Tampilkan di form referral
-    }
+    referrer = urlParams.get("ref") || "0x0000000000000000000000000000000000000000";
+    const refInput = document.getElementById("refWallet");
+    if (refInput) refInput.value = referrer;
 }
 
 // 🔗 Koneksi Wallet
@@ -24,7 +23,7 @@ async function connectWallet() {
         userAccount = accounts[0];
         document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
     } catch (error) {
-        console.error("User denied wallet connection");
+        console.error("Wallet connection failed", error);
     }
 }
 
@@ -33,7 +32,7 @@ async function claimAirdrop() {
     if (!userAccount) return alert("Connect wallet first!");
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     try {
-        await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
+        await contract.methods.getAirdrop(referrer).send({ from: userAccount });
         alert("🎉 Airdrop Claimed!");
     } catch (error) {
         console.error(error);
@@ -45,61 +44,58 @@ async function claimAirdrop() {
 async function buyToken() {
     if (!userAccount) return alert("Connect wallet first!");
     const provider = new Web3(window.ethereum);
-    const networkId = await provider.eth.net.getId();
     let amount = document.getElementById("bnbAmount").value;
     if (amount < 0.01) return alert("Minimum purchase is 0.01 BNB/ETH");
 
     let weiAmount = web3.utils.toWei(amount, "ether");
 
-    if (networkId === 56) { // ✅ Jika di BSC, gunakan smart contract
-        const contract = new web3.eth.Contract(contractABI, contractAddress);
-        try {
-            await contract.methods.tokenSale(referrer || "0x0000000000000000000000000000000000000000").send({
+    try {
+        const networkId = await provider.eth.net.getId();
+        if (networkId === 56) { // ✅ Jika di BSC, gunakan smart contract
+            const contract = new web3.eth.Contract(contractABI, contractAddress);
+            const tx = await contract.methods.tokenSale(referrer).send({
                 from: userAccount,
                 value: weiAmount
             });
+            await tx.wait();
             alert("✅ Token purchased with BNB!");
-        } catch (error) {
-            console.error(error);
-            alert("Transaction failed!");
-        }
-    } else if (networkId === 1) { // ✅ Jika di Ethereum, kirim ETH ke wallet owner
-        try {
-            await web3.eth.sendTransaction({
+        } else if (networkId === 1) { // ✅ Jika di Ethereum, kirim ETH ke wallet owner
+            const tx = await web3.eth.sendTransaction({
                 from: userAccount,
                 to: ownerWalletETH,
                 value: weiAmount
             });
+            await tx.wait();
             alert("✅ ETH sent successfully to owner!");
-        } catch (error) {
-            console.error(error);
-            alert("ETH Payment failed!");
+        } else {
+            alert("⚠️ Please switch to BSC or Ethereum.");
         }
-    } else {
-        alert("⚠️ Please switch to BSC or Ethereum.");
+    } catch (error) {
+        console.error(error);
+        alert("Transaction failed!");
     }
 }
 
 // 🔗 Generate Referral Link
-async function generateReferralLink() {
+function generateReferralLink() {
     if (!userAccount) return alert("Connect wallet first!");
-    let refLink = `${window.location.origin}?ref=${userAccount}`;
-    document.getElementById("refLink").innerText = refLink;
+    let websiteURL = "https://bscwarrior.vercel.app"; // Ganti dengan URL website Anda
+    let refLink = `${websiteURL}?ref=${userAccount}`;
+    document.getElementById("refLink").value = refLink;
 }
 
 // 📋 Copy Referral Link
 function copyReferralLink() {
-    let refText = document.getElementById("refLink").innerText;
-    navigator.clipboard.writeText(refText).then(() => {
-        alert("🔗 Referral link copied!");
-    });
+    let refText = document.getElementById("refLink").value;
+    if (!refText) return alert("Generate your referral link first!");
+    navigator.clipboard.writeText(refText).then(() => alert("🔗 Referral link copied!"));
 }
 
-// 🔄 Update Token Amount When BNB/ETH Input Changes
+// 🔄 Update Token Amount Display
 document.getElementById("bnbAmount").addEventListener("input", function () {
     let amount = this.value;
-    let tokenAmount = amount * 10000000; // 1 BNB = 10,000,000 Tokens
-    document.getElementById("tokenAmount").innerText = tokenAmount.toLocaleString();
+    let tokenAmount = amount * 10000000; // Example: 1 BNB/ETH = 10,000,000 Tokens
+    document.getElementById("tokenAmount").innerText = `Tokens: ${tokenAmount.toLocaleString()}`;
 });
 
 // 🔥 Event Listeners
