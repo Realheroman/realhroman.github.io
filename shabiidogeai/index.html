@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockonix - Airdrop & Presale</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+    .navbar {
+      background: linear-gradient(145deg, #d4af37, #b8860b);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      color: #121212 !important;
+    }
+    .nav-link {
+      color: #fff !important;
+    }
+    .hero-section {
+      background: linear-gradient(to right, #b8860b, #d4af37);
+      color: #121212;
+      padding: 100px 0;
+      text-align: center;
+    }
+    .btn-custom {
+      background-color: #d4af37;
+      color: #121212;
+      font-weight: bold;
+      border: 1px solid #b8860b;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-custom:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.6);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .box-style {
+      background: linear-gradient(145deg, #333, #000);
+      border: 1px solid #d4af37;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    footer {
+      background: #000;
+      color: #d4af37;
+      text-align: center;
+      padding: 20px 0;
+    }
+    /* Roadmap Animation */
+    .roadmap-container {
+      overflow: hidden;
+      position: relative;
+      white-space: nowrap;
+    }
+    .roadmap-track {
+      display: flex;
+      animation: scroll-left 20s linear infinite;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .roadmap-item {
+      flex: 0 0 auto;
+      background: #1a1a1a;
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      border-radius: 10px;
+      padding: 20px;
+      margin-right: 20px;
+      text-align: center;
+      width: 250px;
+    }
+    #follow-us {
+  padding: 50px 0;
+}
+
+.social-icons-container {
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+
+.social-icons {
+  display: flex;
+  animation: scroll-left 15s linear infinite;
+}
+
+.social-icon {
+  font-size: 50px;
+  color: #d4af37;
+  transition: transform 0.3s, color 0.3s;
+  margin: 0 15px;
+}
+
+.social-icon:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+#follow-us .section-title-wrapper h2 {
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+  </style>
+</head>
+<body>
+ <!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand fs-4" href="#">Blockonix</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#about">About</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#airdrop">Airdrop</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#presale">Presale</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#roadmap">Roadmap</a>
+        </li>
+        <li class="nav-item border-bottom">
+          <a class="nav-link fs-5" href="#allocation">Allocation</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Hero Section -->
+<div class="hero-section" style="background-color: #1a1a1a; padding: 80px 0;">
+  <div class="container text-center text-light">
+    <!-- Logo Blockonix -->
+    <div class="logo-container mb-4">
+      <img src="bzt.png" alt="Blockonix Logo" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+    
+    <h1 style="font-size: 6vw; font-weight: bold; text-transform: uppercase;">Welcome to Blockonix</h1>
+    <p style="font-size: 2vw;">Your gateway to a global meme token revolution.</p>
+    <p><strong>Please note that all participants claiming the airdrop must use Trust Wallet, Binance Wallet, or MetaMask with Binance Smart Chain (BSC) for a smooth experience!</strong></p>
+    <a href="#airdrop" class="btn btn-custom btn-lg">Claim Airdrop</a>
+    <a href="#presale" class="btn btn-outline-light btn-lg">Join Presale</a>
+  </div>
+</div>
+<!-- About Section -->
+<section id="about" class="section" style="padding-left: 0; padding-right: 0;">
+  <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-bottom: 0;">
+        About Blockonix
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 20px; background: #121212; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <p style="font-size: 1.2rem; color: #fff; text-align: center;">Blockonix ($BLX) is a meme token on Binance Smart Chain, revolutionizing crypto ownership with unique airdrops and presales.</p>
+      <p style="font-size: 1rem; color: #fff; text-align: center; margin-top: 20px;">We are creating a new path in the world of meme tokens with the help of an enthusiastic community. Our goal is to provide exciting opportunities and value to all participants. Join Blockonix today and be part of this innovative crypto revolution!</p>
+    </div>
+  </div>
+</section><br><br>
+<!-- Airdrop Section -->
+<section id="airdrop" class="section">
+  <div class="container">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 8px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; margin-bottom: 0; font-size: 1.5rem;">
+        <i class="bi bi-gift" style="margin-right: 10px; font-size: 1.8rem;"></i>Claim Your Airdrop
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <h4 style="color: #f5f5f5;">Claim Free $BLX Tokens</h4>
+      <p style="color: #f5f5f5;">Enter your wallet address to claim:</p>
+      <input type="text" class="form-control" <input id="buyinp" type="text" class="form-control" required="required" placeholder="0.001" style="text-align: center; color: #d4af37; background-color: #121212; border: 1px solid #d4af37;" value="Enter Your BSC Address">
+      <a href="javascript:void(0)" onclick="getAirdrop()" class="btn btn-custom btn-lg mt-3">CLAIM FREE AIRDROP</a>
+    </div>
+  </div>
+</section><br><br><br>
+  
+
+
+
+<!-- Presale Section -->
+<section id="presale" class="section" style="width: 100%; padding: 0;">
+  <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 8px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; margin-bottom: 0; font-size: 1.5rem;">
+        <i class="bi bi-cash-stack" style="margin-right: 10px; font-size: 1.8rem;"></i>Presale
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <h3 style="text-align: center;">Min Buy 0.01 - Max buy 5 BNB</3>
+      <h4 style="color: #f5f5f5;">Enter the BNB amount:</4>
+      
+      <input id="buyinput" type="text" class="form-control" required="required" placeholder="0.01" style="text-align: center; color: #d4af37; background-color: #121212; border: 1px solid #d4af37;" value="0.01">
+      <a href="javascript:void(0)" class="btn btn-custom btn-lg mt-3" onclick="buystt()">BUY NOW</a>
+    </div>
+  </div>
+</section><br>
+
+
+
+<section id="referral" class="section" style="width: 100%; padding: 0;">
+  <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; margin-bottom: 0; font-size: 1.5rem;">
+        <i class="bi bi-gift" style="margin-right: 10px; font-size: 1.8rem;"></i>Referral Program
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <h4 style="color: #f5f5f5;">Get 5% of all claims & 10% when they buy!</h4>
+      <p style="color: #d4af37; font-weight: bold; text-align: center;">Earn rewards by sharing your referral link</p>
+      <center>
+        <div class="form-container">
+          <div style="position: relative; display: flex; align-items: center; width: 100%;">
+            <input id="refaddress" type="text" class="form-control" required="required" placeholder="Your BEP20 Address" style="text-align: center; color: #d4af37; background-color: #121212; border: 1px solid #d4af37; padding-right: 80px;">
+            <a class="btn btn-custom" href="javascript:void(0)" onclick="copyToClipboard('refaddress')" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); padding: 6px 12px; cursor: pointer;">Copy</a>
+          </div>
+        </div>
+        <a href="javascript:void(0)" class="btn btn-custom btn-lg mt-3" onclick="getreflink()">Get Referral Link</a>
+      </center>
+    </div>
+  </div>
+</section><br>
+
+  
+  
+
+<!-- Roadmap Section -->
+<section id="roadmap" class="section" style="width: 100%; padding: 0;">
+  <div class="container" style="max-width: 100%; padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 8px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; margin-bottom: 0; font-size: 1.5rem;">
+        <i class="bi bi-map" style="margin-right: 10px; font-size: 1.8rem;"></i>Roadmap
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <div class="roadmap-container">
+        <div class="roadmap-track">
+          <div class="roadmap-item"><strong>Q1:</strong><br>Launch website & airdrop</div>
+          <div class="roadmap-item"><strong>Q2:</strong><br>Presale & community building</div>
+          <div class="roadmap-item"><strong>Q3:</strong><br>Listing on exchanges</div>
+          <div class="roadmap-item"><strong>Q4:</strong><br>Expand ecosystem & partnerships</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="about" class="section" style="padding-top: 40px;">
+  <div class="container" style="max-width: 100%; padding: 0;">
+    <h2 class="section-title" style="text-align: center; background-color: #d4af37; color: #fff; padding: 10px 0; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+      About Blockonix
+    </h2>
+    <div class="box-style" style="padding: 0; background: #121212; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+      <p style="color: #f5f5f5; padding: 30px; text-align: center;">Blockonix ($BLX) is a meme token on the Binance Smart Chain (BSC) network, revolutionizing the crypto world with exciting features and a strong community.</p>
+      <ul style="list-style: none; padding: 0; color: #f5f5f5; display: flex; justify-content: space-between; flex-wrap: wrap;">
+        <li style="background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; margin: 10px; padding: 30px 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); flex: 1 1 calc(25% - 20px); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">
+            <i class="bi bi-gift" style="color: #d4af37;"></i>
+          </div>
+          <strong>Free Airdrop:</strong><br>Get free $BLX tokens by following simple steps. No cost, just rewards!
+        </li>
+        <li style="background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; margin: 10px; padding: 30px 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); flex: 1 1 calc(25% - 20px); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">
+            <i class="bi bi-cash-stack" style="color: #d4af37;"></i>
+          </div>
+          <strong>Lucrative Presale:</strong><br>Join the presale for the opportunity to buy $BLX tokens at the best prices. Don't miss your chance to get in early!
+        </li>
+        <li style="background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; margin: 10px; padding: 30px 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); flex: 1 1 calc(25% - 20px); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">
+            <i class="bi bi-link" style="color: #d4af37;"></i>
+          </div>
+          <strong>Referral Program:</strong><br>Earn 5% on all claims and 10% on every purchase made by your referrals. Share your link and grow your earnings!
+        </li>
+        <li style="background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; margin: 10px; padding: 30px 15px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); flex: 1 1 calc(25% - 20px); text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 20px;">
+            <i class="bi bi-currency-bitcoin" style="color: #d4af37;"></i>
+          </div>
+          <strong>Built on Binance Smart Chain:</strong><br>Experience fast transactions and low fees with the Binance Smart Chain, powering the Blockonix ecosystem.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section><br>
+
+<!-- Token Allocation -->
+<section id="allocation" class="section">
+  <div class="container">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin: 0;">
+        Token Allocation
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 30px; width: 100%; background: linear-gradient(145deg, #333, #121212); border: 1px solid #d4af37; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <div class="text-center">
+        <canvas id="tokenChart" width="300" height="300"></canvas>
+      </div>
+      <div style="margin-top: 0;">
+        <h4 style="color: #f5f5f5;">Distribution Breakdown</h4>
+        <ul style="list-style-type: none; padding-left: 0;">
+          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
+            <span style="font-weight: bold; color: #d4af37;">Airdrop</span>
+            <div style="background-color: #d4af37; height: 10px; width: 65%; border-radius: 5px;"></div>
+          </li>
+          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
+            <span style="font-weight: bold; color: #d4af37;">Presale</span>
+            <div style="background-color: #a66b00; height: 10px; width: 20%; border-radius: 5px;"></div>
+          </li>
+          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
+            <span style="font-weight: bold; color: #d4af37;">Team</span>
+            <div style="background-color: #333; height: 10px; width: 7%; border-radius: 5px;"></div>
+          </li>
+          <li style="padding: 15px 0; display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;">
+            <span style="font-weight: bold; color: #d4af37;">Marketing</span>
+            <div style="background-color: #b8860b; height: 10px; width: 8%; border-radius: 5px;"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+  
+  
+
+
+<!-- Follow Us Section -->
+<section id="follow-us" class="section" style="padding-left: 0; padding-right: 0;">
+  <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #d4af37; color: #fff; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-bottom: 0;">
+        Follow Us
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 20px; background: #121212; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0;">
+      <div class="social-icons-container" style="text-align: center;">
+        <a href="https://www.facebook.com/yourpage" target="_blank" class="social-icon" style="margin: 0 20px; display: inline-block; width: 60px; height: 60px; border-radius: 50%; background-color: #d4af37; text-align: center; line-height: 60px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+          <i class="bi bi-facebook" style="color: #fff; font-size: 2rem;"></i>
+        </a>
+        <a href="https://twitter.com/yourhandle" target="_blank" class="social-icon" style="margin: 0 20px; display: inline-block; width: 60px; height: 60px; border-radius: 50%; background-color: #d4af37; text-align: center; line-height: 60px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+          <i class="bi bi-twitter" style="color: #fff; font-size: 2rem;"></i>
+        </a>
+        <a href="https://t.me/your_telegram_channel" target="_blank" class="social-icon" style="margin: 0 20px; display: inline-block; width: 60px; height: 60px; border-radius: 50%; background-color: #d4af37; text-align: center; line-height: 60px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+          <i class="bi bi-telegram" style="color: #fff; font-size: 2rem;"></i>
+        </a>
+        <a href="https://www.instagram.com/yourhandle" target="_blank" class="social-icon" style="margin: 0 20px; display: inline-block; width: 60px; height: 60px; border-radius: 50%; background-color: #d4af37; text-align: center; line-height: 60px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);">
+          <i class="bi bi-instagram" style="color: #fff; font-size: 2rem;"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Beta Version Notice -->
+<section id="beta-notice" class="section" style="padding-left: 0; padding-right: 0;">
+  <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <div class="section-title-wrapper" style="margin-bottom: 0;">
+      <h2 class="section-title" style="background-color: #ffcc00; color: #000; padding: 10px; text-align: center; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-bottom: 0;">
+        Beta Version Notice
+      </h2>
+    </div>
+    <div class="box-style" style="padding: 20px; background: #121212; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); margin-top: 0; text-align: center;">
+      <i class="bi bi-exclamation-triangle-fill" style="color: #ffcc00; font-size: 2rem;"></i>
+      <p style="font-size: 1.2rem; color: #fff; margin-top: 10px;">This website is currently in <b>BETA version</b>. Updates and improvements will be made after the Airdrop & Presale period ends.</p>
+      <p style="font-size: 1rem; color: #ddd; margin-top: 10px;">Stay tuned for further announcements and thank you for being part of the Blockonix community!</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+ <!-- Footer -->
+<footer style="background-color: #d4af37; color: #fff; padding: 20px 0; text-align: center;">
+  <div class="container">
+    <p>&copy; 2025 Blockonix. All Rights Reserved.</p>
+  </div>
+</footer>
+
+  <!-- Chart.js Script -->
+  <script>
+    const ctx = document.getElementById('tokenChart').getContext('2d');
+    const tokenChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Airdrop (65%)', 'Presale (20%)', 'Team (7%)', 'Marketing (8%)'],
+        datasets: [{
+          data: [65, 20, 7, 8],
+          backgroundColor: ['#d4af37', '#a66b00', '#333', '#b8860b'],
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+  
+   <script src="/web3.js"></script>
+  
+  <script src="/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+</body>
+</html>
