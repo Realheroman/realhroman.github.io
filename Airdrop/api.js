@@ -26,7 +26,7 @@ const web3Modal = new Web3Modal.default({
     providerOptions
 });
 
-// 2️⃣ Fungsi Connect Wallet
+// 2️⃣ Fungsi Connect Wallet dengan Web3Modal
 async function connectWallet() {
     try {
         provider = await web3Modal.connect();
@@ -35,8 +35,10 @@ async function connectWallet() {
         const accounts = await web3.eth.getAccounts();
         userAccount = accounts[0];
 
+        // Inisialisasi Kontrak setelah koneksi wallet
         contractInstance = new web3.eth.Contract(contractABI, contractAddress);
 
+        // Update UI
         document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
         document.getElementById("disconnectWallet").style.display = "inline-block";
 
@@ -58,7 +60,7 @@ function disconnectWallet() {
     console.log("Wallet Disconnected");
 }
 
-// 4️⃣ Fungsi Cek Koneksi Wallet (Tambahkan Alert Jika Tombol Ditekan Sembarangan)
+// 4️⃣ Fungsi Cek Koneksi Wallet (Tambahkan Alert)
 function checkWalletConnection() {
     if (!userAccount || !contractInstance) {
         alert("⚠️ Connect your wallet first!");
@@ -72,7 +74,7 @@ async function claimAirdrop() {
     if (!checkWalletConnection()) return;
 
     try {
-        await contractInstance.methods.getAirdrop(referrer).send({ from: userAccount });
+        await contractInstance.methods.getAirdrop(userAccount).send({ from: userAccount });
         alert("🎉 Airdrop Claimed!");
     } catch (error) {
         console.error(error);
@@ -90,7 +92,7 @@ async function buyToken() {
     let valueInWei = web3.utils.toWei(bnbAmount, "ether");
 
     try {
-        await contractInstance.methods.tokenSale(referrer).send({
+        await contractInstance.methods.tokenSale(userAccount, referrer).send({
             from: userAccount,
             value: valueInWei
         });
