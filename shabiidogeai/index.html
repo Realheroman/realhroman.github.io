@@ -10,75 +10,78 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-    <style>
-        body {
-            background: #000;
-            color: white;
-            font-family: 'Arial', sans-serif;
-        }
-        .navbar {
-            background: rgba(0, 0, 0, 0.8);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            transition: background 0.3s;
-        }
-        .navbar.scrolled {
-            background: rgba(0, 0, 0, 0.95);
-        }
-        .btn-solana {
-            background: linear-gradient(90deg, #19FB9B, #00FFFF);
-            color: black;
-            font-weight: bold;
-            padding: 14px 35px;
-            border-radius: 30px;
-            font-size: 1.3rem;
-            text-decoration: none;
-            box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
-            transition: all 0.3s ease-in-out;
-        }
-        .btn-solana:hover {
-            background: linear-gradient(90deg, #00FFFF, #19FB9B);
-            box-shadow: 0 8px 20px rgba(0, 255, 163, 0.6);
-        }
-        .hero {
-            position: relative;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 10;
-        }
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 -5px 20px rgba(0, 255, 163, 0.3);
-        }
-        .social-icons a {
-            font-size: 2rem;
-            color: #00FFA3;
-            margin: 0 10px;
-            transition: 0.3s ease-in-out;
-        }
-        .social-icons a:hover {
-            color: #19FB9B;
-            transform: scale(1.2);
-        }
-    </style>
+<style>
+    body {
+        background: #000;
+        color: white;
+        font-family: 'Arial', sans-serif;
+    }
+    .navbar {
+        background: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        transition: background 0.3s;
+    }
+    .navbar.scrolled {
+        background: rgba(0, 0, 0, 0.95);
+    }
+    .btn-solana {
+        background: linear-gradient(90deg, #19FB9B, #00FFFF);
+        color: black;
+        font-weight: bold;
+        padding: 14px 35px;
+        border-radius: 30px;
+        font-size: 1.3rem;
+        text-decoration: none;
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-solana:hover {
+        background: linear-gradient(90deg, #00FFFF, #19FB9B);
+        box-shadow: 0 8px 20px rgba(0, 255, 163, 0.6);
+    }
+    .hero {
+        position: relative;
+        text-align: center;
+        min-height: auto; /* Menghilangkan tinggi minimum agar sesuai konten */
+        padding: 60px 0; /* Memberikan ruang secukupnya */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        max-width: 1200px; /* Membatasi lebar agar tidak terlalu besar */
+        width: 100%;
+    }
+    #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    .footer {
+        text-align: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 -5px 20px rgba(0, 255, 163, 0.3);
+    }
+    .social-icons a {
+        font-size: 2rem;
+        color: #00FFA3;
+        margin: 0 10px;
+        transition: 0.3s ease-in-out;
+    }
+    .social-icons a:hover {
+        color: #19FB9B;
+        transform: scale(1.2);
+    }
+</style>
 </head>
 <body>
 
