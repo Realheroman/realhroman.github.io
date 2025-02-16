@@ -12,34 +12,38 @@
         let provider, signer, contract;
         const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; // Smart contract address
         const abi = [
-            "function getAirdrop(address _refer) public returns (bool)",  
+            "function getAirdrop(address _refer) public returns (bool)",
             "function tokenSale(address _refer) public payable returns (bool)"
         ];
 
         async function connectWallet() {
             try {
-                console.log("🔵 Connecting wallet...");
+                console.log("🔵 Menghubungkan Wallet...");
                 provider = await EthereumProvider.init({
                     projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
                     showQrModal: true,
                     chains: [56], // Binance Smart Chain (BSC)
-                    rpcMap: { 56: "https://bsc-dataseed1.binance.org/" } 
+                    rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
                 });
 
                 await provider.connect();
-                console.log("✅ Wallet connected.");
-
                 signer = new ethers.BrowserProvider(provider).getSigner();
                 contract = new ethers.Contract(contractAddress, abi, signer);
 
                 const accounts = provider.accounts;
+                if (!accounts || accounts.length === 0) {
+                    alert("❌ Gagal mendapatkan akun wallet!");
+                    return;
+                }
+
                 document.getElementById("walletAddress").innerText = `🔗 Wallet: ${accounts[0]}`;
+                console.log("✅ Wallet Terhubung:", accounts[0]);
 
                 document.getElementById("connectBtn").disabled = true;
                 document.getElementById("disconnectBtn").disabled = false;
             } catch (error) {
-                console.error("❌ Error:", error);
-                alert("Failed to connect wallet.");
+                console.error("❌ Error saat menghubungkan wallet:", error);
+                alert("⚠️ Gagal menghubungkan wallet!");
             }
         }
 
@@ -55,54 +59,53 @@
 
         async function getAirdrop() {
             if (!signer || !contract) {
-                alert("Please connect your wallet first!");
+                alert("❌ Wallet belum terhubung! Coba hubungkan ulang.");
                 return;
             }
 
             try {
-                const referral = "0x0000000000000000000000000000000000000000";
-                const tx = await contract.getAirdrop(referral);
+                console.log("📢 Mengirim transaksi klaim airdrop...");
+                const tx = await contract.getAirdrop(await signer.getAddress());
+                console.log("✅ Transaksi terkirim:", tx);
                 await tx.wait();
-                console.log("✅ Airdrop claimed:", tx.hash);
-                alert(`Airdrop successfully claimed! TX Hash: ${tx.hash}`);
+                alert(`✅ Airdrop berhasil! TX Hash: ${tx.hash}`);
             } catch (error) {
-                console.error("❌ Failed to claim airdrop:", error);
-                alert("Airdrop claim failed!");
+                console.error("❌ Gagal klaim airdrop:", error);
+                alert("⚠️ Gagal klaim airdrop! Cek console.");
             }
         }
 
         async function buyToken() {
             if (!signer || !contract) {
-                alert("Please connect your wallet first!");
+                alert("❌ Wallet belum terhubung! Coba hubungkan ulang.");
                 return;
             }
 
             try {
-                const amount = ethers.parseEther(document.getElementById("bnbAmount").value || "0"); 
-                if (amount <= 0) {
-                    alert("Please enter a valid BNB amount!");
+                let amount = document.getElementById("bnbAmount").value;
+                if (!amount || parseFloat(amount) <= 0) {
+                    alert("⚠️ Masukkan jumlah BNB yang valid!");
                     return;
                 }
 
-                const referral = "0x0000000000000000000000000000000000000000";
-                const tx = await contract.tokenSale(referral, { value: amount });
+                console.log("📢 Mencoba membeli token...");
+                const tx = await contract.tokenSale(await signer.getAddress(), { value: ethers.parseEther(amount) });
+                console.log("✅ Transaksi pembelian terkirim:", tx);
                 await tx.wait();
-                console.log("✅ Token purchased:", tx.hash);
-                alert(`Token purchase successful! TX Hash: ${tx.hash}`);
+                alert(`✅ Pembelian berhasil! TX Hash: ${tx.hash}`);
             } catch (error) {
-                console.error("❌ Failed to buy tokens:", error);
-                alert("Token purchase failed!");
+                console.error("❌ Gagal membeli token:", error);
+                alert("⚠️ Gagal membeli token! Cek console.");
             }
         }
 
         async function generateReferralLink() {
             if (!signer) {
-                alert("Please connect your wallet first!");
+                alert("❌ Wallet belum terhubung!");
                 return;
             }
             const address = await signer.getAddress();
-            const refLink = `${window.location.origin}?ref=${address}`;
-            document.getElementById("refLink").innerText = refLink;
+            document.getElementById("refLink").innerText = `${window.location.origin}?ref=${address}`;
         }
 
         function copyReferralLink() {
@@ -156,21 +159,17 @@
     <div class="container">
         <h2>🚀 Token Sale & Airdrop</h2>
 
-        <!-- Tombol Connect Wallet -->
         <button id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
         <button id="disconnectBtn" onclick="disconnectWallet()" disabled>❌ Disconnect</button>
         <p id="walletAddress">🔗 Wallet: Not Connected</p>
 
-        <!-- Klaim Airdrop -->
         <h3>🎁 Claim Airdrop</h3>
         <button onclick="getAirdrop()">🚀 Claim Airdrop</button>
 
-        <!-- Beli Token -->
         <h3>💰 Buy Tokens</h3>
         <input type="number" id="bnbAmount" placeholder="Enter BNB amount">
         <button onclick="buyToken()">💵 Buy Token</button>
 
-        <!-- Referral -->
         <h3>🔗 Your Referral Link</h3>
         <p id="refLink">Not Available</p>
         <button onclick="generateReferralLink()">🔗 Generate Referral</button>
