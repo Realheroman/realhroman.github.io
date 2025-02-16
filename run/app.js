@@ -17,62 +17,48 @@ function getReferrerFromURL() {
 }
 
 // 2️⃣ Koneksi Wallet: Pilihan antara MetaMask atau WalletConnect
-async function connectWallet(method) {
+async function connectWallet() {
     try {
-        if (method === "metamask") {
-            if (window.ethereum) {
-                web3 = new Web3(window.ethereum);
-                const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                userAccount = accounts[0];
-                contract = new web3.eth.Contract(contractABI, contractAddress);
-                document.getElementById("walletStatus").innerText = `✅ MetaMask: ${userAccount.substring(0, 6)}...`;
-            } else {
-                alert("Silakan instal MetaMask!");
-                return;
-            }
-        } else if (method === "walletconnect") {
-            console.log("🔵 Menghubungkan WalletConnect...");
-            provider = await EthereumProvider.init({
-                projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
-                showQrModal: true,
-                chains: [56],
-                rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
-            });
+        console.log("🔵 Memulai koneksi...");
+        provider = await EthereumProvider.init({
+            projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
+            showQrModal: true,
+            chains: [56],
+            rpcMap: { 56: "https://bsc-dataseed1.binance.org/" } 
+        });
 
-            await provider.connect();
-            signer = new ethers.BrowserProvider(provider).getSigner();
-            contract = new ethers.Contract(contractAddress, contractABI, signer);
+        await provider.connect();
+        console.log("✅ Wallet berhasil terhubung.");
 
-            userAccount = provider.accounts[0];
-            document.getElementById("walletStatus").innerText = `✅ WalletConnect: ${userAccount.substring(0, 6)}...`;
-        }
+        const web3Provider = new ethers.BrowserProvider(provider); 
+        signer = await web3Provider.getSigner(); // Perbaikan di sini
+        contract = new ethers.Contract(contractAddress, abi, signer); // Pakai signer di sini
+
+        const accounts = await provider.request({ method: 'eth_accounts' });
+        document.getElementById("walletStatus").innerText = `🔗 Wallet: ${accounts[0]}`;
+
     } catch (error) {
-        console.error("❌ Error koneksi wallet:", error);
-        alert(`Gagal menghubungkan wallet! \nError: ${error.message}`);
+        console.error("❌ Error:", error);
+        alert("Gagal menghubungkan wallet.");
     }
 }
 
 // 3️⃣ Klaim Airdrop (Menggunakan Logika dari Script Kedua)
-async function claimAirdrop() {
-    if (!userAccount) return alert("Harap hubungkan wallet terlebih dahulu!");
+async function getAirdrop() {
+    if (!signer || !contract) {
+        alert("Harap hubungkan wallet terlebih dahulu!");
+        return;
+    }
 
     try {
-        console.log("🔵 Mencoba klaim airdrop...");
-        let tx;
-        if (web3) {
-            // MetaMask (Web3.js)
-            tx = await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
-        } else {
-            // WalletConnect (Ethers.js)
-            tx = await contract.getAirdrop(userAccount);
-            await tx.wait();
-        }
-
-        console.log("✅ Airdrop berhasil:", tx);
-        alert("🎉 Airdrop berhasil diklaim!");
+        const referral = getReferralAddress();
+        const tx = await contract.connect(signer).getAirdrop(referral); // Gunakan signer
+        await tx.wait();
+        console.log("✅ Airdrop berhasil diklaim:", tx.hash);
+        alert(`Airdrop berhasil diklaim! TX Hash: ${tx.hash}`);
     } catch (error) {
         console.error("❌ Gagal klaim airdrop:", error);
-        alert(`Klaim airdrop gagal! \nError: ${error.message}`);
+        alert("Klaim airdrop gagal!");
     }
 }
 
