@@ -14,17 +14,20 @@
     <p id="status">Status: Belum Terhubung</p>
 
     <script>
-        let userWallet = null; // Variabel untuk menyimpan wallet sementara
+        let userWallet = null; // Variabel untuk menyimpan wallet
 
         // 🔹 Fungsi untuk membuat wallet baru menggunakan WebAuthn
         async function registerWallet() {
             try {
+                const privateKey = ethers.Wallet.createRandom().privateKey; // Buat private key baru
+                localStorage.setItem("web3_privateKey", privateKey); // Simpan private key di storage
+
                 const cred = await navigator.credentials.create({
                     publicKey: {
                         challenge: new Uint8Array(32),
                         rp: { name: "Web3 Wallet" },
                         user: {
-                            id: new Uint8Array(16),
+                            id: crypto.getRandomValues(new Uint8Array(16)), // ID unik
                             name: "web3user",
                             displayName: "User Web3"
                         },
@@ -33,9 +36,12 @@
                 });
 
                 if (!cred) throw new Error("Gagal membuat kredensial.");
-
-                // Simpan kredensial WebAuthn di browser (hanya referensi, bukan private key)
-                localStorage.setItem("web3_wallet", JSON.stringify(cred));
+                
+                // Simpan credential ID dalam format yang benar
+                localStorage.setItem("web3_wallet", JSON.stringify({
+                    rawId: Array.from(new Uint8Array(cred.rawId)), // Simpan sebagai array biasa
+                    privateKey
+                }));
 
                 document.getElementById("status").innerText = "✅ Wallet Berhasil Dibuat!";
                 alert("Wallet Berhasil Dibuat!");
@@ -54,15 +60,18 @@
                     publicKey: {
                         challenge: new Uint8Array(32),
                         allowCredentials: [{
-                            id: storedCredential.rawId,
+                            id: new Uint8Array(storedCredential.rawId).buffer, // Konversi kembali ke ArrayBuffer
                             type: "public-key"
                         }],
                         timeout: 60000
                     }
                 });
 
-                // Buat wallet dengan private key dari WebAuthn
-                userWallet = ethers.Wallet.createRandom();
+                // Ambil private key yang sudah disimpan
+                const privateKey = localStorage.getItem("web3_privateKey");
+                if (!privateKey) return alert("Gagal mengambil private key!");
+
+                userWallet = new ethers.Wallet(privateKey);
                 document.getElementById("status").innerText = `✅ Wallet Aktif: ${userWallet.address}`;
                 alert(`Wallet Terhubung: ${userWallet.address}`);
             } catch (error) {
