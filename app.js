@@ -14,43 +14,51 @@ function getReferrerFromURL() {
     }
 }
 
-// 2️⃣ Connect Wallet and Force Binance Smart Chain
+// 2️⃣ Force Binance Smart Chain Before Connecting
+async function checkNetworkBeforeConnect() {
+    if (!window.ethereum) {
+        return alert("Please install MetaMask or Trust Wallet.");
+    }
+
+    const currentChainId = await ethereum.request({ method: "eth_chainId" });
+
+    if (currentChainId !== "0x38") { // 0x38 = Binance Smart Chain Mainnet
+        try {
+            await ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: "0x38" }],
+            });
+            alert("✅ Switched to Binance Smart Chain! Now connect your wallet.");
+        } catch (switchError) {
+            if (switchError.code === 4902) {
+                await ethereum.request({
+                    method: "wallet_addEthereumChain",
+                    params: [{
+                        chainId: "0x38",
+                        chainName: "Binance Smart Chain",
+                        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                        rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                        blockExplorerUrls: ["https://bscscan.com/"],
+                    }],
+                });
+                alert("✅ Binance Smart Chain added! Now connect your wallet.");
+            } else {
+                console.error("Failed to switch network:", switchError);
+                alert("⚠️ Please switch to Binance Smart Chain manually in your wallet.");
+            }
+        }
+    }
+
+    connectWallet(); // Connect after switching to BSC
+}
+
+// 3️⃣ Connect Wallet After Network is Correct
 async function connectWallet() {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         try {
-            // Request account access
             const accounts = await ethereum.request({ method: "eth_requestAccounts" });
             userAccount = accounts[0];
-
-            // Check the current network
-            const currentChainId = await ethereum.request({ method: "eth_chainId" });
-
-            if (currentChainId !== "0x38") { // 0x38 = Binance Smart Chain Mainnet
-                try {
-                    await ethereum.request({
-                        method: "wallet_switchEthereumChain",
-                        params: [{ chainId: "0x38" }],
-                    });
-                } catch (switchError) {
-                    if (switchError.code === 4902) {
-                        await ethereum.request({
-                            method: "wallet_addEthereumChain",
-                            params: [{
-                                chainId: "0x38",
-                                chainName: "Binance Smart Chain",
-                                nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
-                                rpcUrls: ["https://bsc-dataseed.binance.org/"],
-                                blockExplorerUrls: ["https://bscscan.com/"],
-                            }],
-                        });
-                    } else {
-                        console.error("Failed to switch network:", switchError);
-                        alert("Please switch to Binance Smart Chain manually in your wallet.");
-                    }
-                }
-            }
-
             document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
         } catch (error) {
             console.error("User denied wallet connection");
@@ -64,7 +72,7 @@ async function connectWallet() {
     }
 }
 
-// 3️⃣ Claim Airdrop
+// 4️⃣ Claim Airdrop
 async function claimAirdrop() {
     if (!userAccount) return alert("Connect your wallet first!");
     const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -77,7 +85,7 @@ async function claimAirdrop() {
     }
 }
 
-// 4️⃣ Buy Token (Presale) with Referral
+// 5️⃣ Buy Token (Presale) with Referral
 async function buyToken() {
     if (!userAccount) return alert("Connect your wallet first!");
     const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -97,7 +105,7 @@ async function buyToken() {
     }
 }
 
-// 5️⃣ Generate Referral Link
+// 6️⃣ Generate Referral Link
 async function generateReferralLink() {
     if (!userAccount) return alert("Connect your wallet first!");
     
@@ -105,7 +113,7 @@ async function generateReferralLink() {
     document.getElementById("refLink").innerText = refLink;
 }
 
-// 6️⃣ Copy Referral Link
+// 7️⃣ Copy Referral Link
 function copyReferralLink() {
     let refText = document.getElementById("refLink").innerText;
     navigator.clipboard.writeText(refText).then(() => {
@@ -113,19 +121,19 @@ function copyReferralLink() {
     });
 }
 
-// 7️⃣ Update Token Amount When BNB Input Changes
+// 8️⃣ Update Token Amount When BNB Input Changes
 document.getElementById("bnbAmount").addEventListener("input", function() {
     let bnb = this.value;
     let tokenAmount = bnb * 10000000; // 1 BNB = 10,000,000 $BWAR
     document.getElementById("tokenAmount").innerText = tokenAmount.toLocaleString();
 });
 
-// 8️⃣ Event Listeners
-document.getElementById("connectWallet").addEventListener("click", connectWallet);
+// 9️⃣ Event Listeners
+document.getElementById("connectWallet").addEventListener("click", checkNetworkBeforeConnect);
 document.getElementById("claimAirdrop").addEventListener("click", claimAirdrop);
 document.getElementById("buyToken").addEventListener("click", buyToken);
 document.getElementById("generateRef").addEventListener("click", generateReferralLink);
 document.getElementById("copyRef").addEventListener("click", copyReferralLink);
 
-// 9️⃣ Retrieve Referral from URL When Page Loads
+// 🔟 Retrieve Referral from URL When Page Loads
 window.onload = getReferrerFromURL;
