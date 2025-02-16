@@ -1,47 +1,33 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WalletConnect + Smart Contract</title>
-    <script src="https://esm.sh/ethers"></script>
-</head>
-<body>
-    <h2>Wallet Connection</h2>
-    <button id="connectBtn" onclick="connectWallet()">🔗 Hubungkan Wallet</button>
-    <button id="disconnectBtn" onclick="disconnectWallet()" disabled>🔴 Putuskan Koneksi</button>
-    <p id="walletAddress">🔗 Wallet: Not Connected</p>
-
-    <h2>Referral Program</h2>
-    <input type="text" id="referralAddress" placeholder="Masukkan alamat referral (opsional)">
-    
-    <h2>Interact with Smart Contract</h2>
-    <button onclick="getAirdrop()">🎁 Klaim Airdrop</button>
-    <button onclick="buyToken()">💰 Beli Token</button>
-
+    <title>Token Sale & Airdrop</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script type="module">
         import { EthereumProvider } from "https://esm.sh/@walletconnect/ethereum-provider@2.8.1";
         import { ethers } from "https://esm.sh/ethers";
 
         let provider, signer, contract;
-        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; // Alamat smart contract Anda
-        const abi = [  
+        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; // Smart contract address
+        const abi = [
             "function getAirdrop(address _refer) public returns (bool)",  
             "function tokenSale(address _refer) public payable returns (bool)"
         ];
 
         async function connectWallet() {
             try {
-                console.log("🔵 Memulai koneksi...");
+                console.log("🔵 Connecting wallet...");
                 provider = await EthereumProvider.init({
-                    projectId: "2891d08b2b53e94b9c8ec031af88d6a9", // Ganti jika perlu
+                    projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
                     showQrModal: true,
                     chains: [56], // Binance Smart Chain (BSC)
                     rpcMap: { 56: "https://bsc-dataseed1.binance.org/" } 
                 });
 
                 await provider.connect();
-                console.log("✅ Wallet berhasil terhubung.");
+                console.log("✅ Wallet connected.");
 
                 signer = new ethers.BrowserProvider(provider).getSigner();
                 contract = new ethers.Contract(contractAddress, abi, signer);
@@ -53,7 +39,7 @@
                 document.getElementById("disconnectBtn").disabled = false;
             } catch (error) {
                 console.error("❌ Error:", error);
-                alert("Gagal menghubungkan wallet.");
+                alert("Failed to connect wallet.");
             }
         }
 
@@ -67,53 +53,129 @@
             }
         }
 
-        function getReferralAddress() {
-            const referralInput = document.getElementById("referralAddress").value.trim();
-            return ethers.isAddress(referralInput) ? referralInput : "0x0000000000000000000000000000000000000000";
-        }
-
         async function getAirdrop() {
             if (!signer || !contract) {
-                alert("Harap hubungkan wallet terlebih dahulu!");
+                alert("Please connect your wallet first!");
                 return;
             }
 
             try {
-                const referral = getReferralAddress();
+                const referral = "0x0000000000000000000000000000000000000000";
                 const tx = await contract.getAirdrop(referral);
                 await tx.wait();
-                console.log("✅ Airdrop berhasil diklaim:", tx.hash);
-                alert(`Airdrop berhasil diklaim! TX Hash: ${tx.hash}`);
+                console.log("✅ Airdrop claimed:", tx.hash);
+                alert(`Airdrop successfully claimed! TX Hash: ${tx.hash}`);
             } catch (error) {
-                console.error("❌ Gagal klaim airdrop:", error);
-                alert("Klaim airdrop gagal!");
+                console.error("❌ Failed to claim airdrop:", error);
+                alert("Airdrop claim failed!");
             }
         }
 
         async function buyToken() {
             if (!signer || !contract) {
-                alert("Harap hubungkan wallet terlebih dahulu!");
+                alert("Please connect your wallet first!");
                 return;
             }
 
             try {
-                const referral = getReferralAddress();
-                const amount = ethers.parseEther("0.1"); // Ganti jumlah BNB sesuai kebutuhan
+                const amount = ethers.parseEther(document.getElementById("bnbAmount").value || "0"); 
+                if (amount <= 0) {
+                    alert("Please enter a valid BNB amount!");
+                    return;
+                }
 
+                const referral = "0x0000000000000000000000000000000000000000";
                 const tx = await contract.tokenSale(referral, { value: amount });
                 await tx.wait();
-                console.log("✅ Token berhasil dibeli:", tx.hash);
-                alert(`Token berhasil dibeli! TX Hash: ${tx.hash}`);
+                console.log("✅ Token purchased:", tx.hash);
+                alert(`Token purchase successful! TX Hash: ${tx.hash}`);
             } catch (error) {
-                console.error("❌ Gagal membeli token:", error);
-                alert("Pembelian token gagal!");
+                console.error("❌ Failed to buy tokens:", error);
+                alert("Token purchase failed!");
             }
+        }
+
+        async function generateReferralLink() {
+            if (!signer) {
+                alert("Please connect your wallet first!");
+                return;
+            }
+            const address = await signer.getAddress();
+            const refLink = `${window.location.origin}?ref=${address}`;
+            document.getElementById("refLink").innerText = refLink;
+        }
+
+        function copyReferralLink() {
+            let refText = document.getElementById("refLink").innerText;
+            navigator.clipboard.writeText(refText).then(() => {
+                alert("🔗 Referral link copied!");
+            });
         }
 
         window.connectWallet = connectWallet;
         window.disconnectWallet = disconnectWallet;
         window.getAirdrop = getAirdrop;
         window.buyToken = buyToken;
+        window.generateReferralLink = generateReferralLink;
+        window.copyReferralLink = copyReferralLink;
     </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🚀 Token Sale & Airdrop</h2>
+
+        <!-- Tombol Connect Wallet -->
+        <button id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
+        <button id="disconnectBtn" onclick="disconnectWallet()" disabled>❌ Disconnect</button>
+        <p id="walletAddress">🔗 Wallet: Not Connected</p>
+
+        <!-- Klaim Airdrop -->
+        <h3>🎁 Claim Airdrop</h3>
+        <button onclick="getAirdrop()">🚀 Claim Airdrop</button>
+
+        <!-- Beli Token -->
+        <h3>💰 Buy Tokens</h3>
+        <input type="number" id="bnbAmount" placeholder="Enter BNB amount">
+        <button onclick="buyToken()">💵 Buy Token</button>
+
+        <!-- Referral -->
+        <h3>🔗 Your Referral Link</h3>
+        <p id="refLink">Not Available</p>
+        <button onclick="generateReferralLink()">🔗 Generate Referral</button>
+        <button onclick="copyReferralLink()">📋 Copy Link</button>
+    </div>
+
 </body>
 </html>
