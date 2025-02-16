@@ -20,29 +20,29 @@ function getReferrerFromURL() {
 async function connectWallet() {
     try {
         console.log("🔵 Memulai koneksi...");
-        provider = await EthereumProvider.init({
-            projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
-            showQrModal: true,
-            chains: [56],
-            rpcMap: { 56: "https://bsc-dataseed1.binance.org/" } 
-        });
+        
+        provider = new ethers.BrowserProvider(window.ethereum); // Ambil provider langsung dari MetaMask
+        await provider.send("eth_requestAccounts", []); // Minta akses akun
 
-        await provider.connect();
-        console.log("✅ Wallet berhasil terhubung.");
+        signer = await provider.getSigner();
+        console.log("✅ Signer berhasil diambil.", signer);
 
-        const web3Provider = new ethers.BrowserProvider(provider); 
-        signer = await web3Provider.getSigner(); // Perbaikan di sini
-        contract = new ethers.Contract(contractAddress, abi, signer); // Pakai signer di sini
+        contract = new ethers.Contract(contractAddress, abi, signer);
+        console.log("✅ Kontrak berhasil diinisialisasi.", contract);
 
-        const accounts = await provider.request({ method: 'eth_accounts' });
+        const accounts = await provider.listAccounts();
+        if (accounts.length === 0) {
+            console.error("❌ Tidak ada akun yang terhubung.");
+            return;
+        }
+
         document.getElementById("walletStatus").innerText = `🔗 Wallet: ${accounts[0]}`;
 
     } catch (error) {
-        console.error("❌ Error:", error);
+        console.error("❌ Error koneksi wallet:", error);
         alert("Gagal menghubungkan wallet.");
     }
 }
-
 // 3️⃣ Klaim Airdrop (Menggunakan Logika dari Script Kedua)
 async function getAirdrop() {
     if (!signer || !contract) {
@@ -52,7 +52,8 @@ async function getAirdrop() {
 
     try {
         const referral = getReferralAddress();
-        const tx = await contract.connect(signer).getAirdrop(referral); // Gunakan signer
+        const tx = await contract.getAirdrop(referral);
+        console.log("🔵 Mengirim transaksi airdrop...", tx);
         await tx.wait();
         console.log("✅ Airdrop berhasil diklaim:", tx.hash);
         alert(`Airdrop berhasil diklaim! TX Hash: ${tx.hash}`);
@@ -61,36 +62,25 @@ async function getAirdrop() {
         alert("Klaim airdrop gagal!");
     }
 }
-
 // 4️⃣ Beli Token (Menggunakan Logika dari Script Kedua)
 async function buyToken() {
-    if (!userAccount) return alert("Harap hubungkan wallet terlebih dahulu!");
-
-    let bnbAmount = document.getElementById("bnbAmount").value;
-    if (bnbAmount < 0.01) return alert("Minimum pembelian adalah 0.01 BNB");
+    if (!signer || !contract) {
+        alert("Harap hubungkan wallet terlebih dahulu!");
+        return;
+    }
 
     try {
-        console.log("🔵 Mencoba membeli token...");
-        let tx;
-        if (web3) {
-            // MetaMask (Web3.js)
-            tx = await contract.methods.tokenSale(referrer || "0x0000000000000000000000000000000000000000").send({
-                from: userAccount,
-                value: web3.utils.toWei(bnbAmount, "ether")
-            });
-        } else {
-            // WalletConnect (Ethers.js)
-            tx = await contract.tokenSale(referrer || "0x0000000000000000000000000000000000000000", {
-                value: ethers.parseEther(bnbAmount)
-            });
-            await tx.wait();
-        }
+        const referral = getReferralAddress();
+        const amount = ethers.parseEther("0.1"); // Jumlah BNB untuk pembelian
 
-        console.log("✅ Token berhasil dibeli:", tx);
-        alert(`✅ Token berhasil dibeli! TX Hash: ${tx.transactionHash || tx.hash}`);
+        console.log("🔵 Mengirim transaksi pembelian token...");
+        const tx = await contract.tokenSale(referral, { value: amount });
+        await tx.wait();
+        console.log("✅ Token berhasil dibeli:", tx.hash);
+        alert(`Token berhasil dibeli! TX Hash: ${tx.hash}`);
     } catch (error) {
         console.error("❌ Gagal membeli token:", error);
-        alert(`Pembelian token gagal! \nError: ${error.message}`);
+        alert("Pembelian token gagal!");
     }
 }
 
