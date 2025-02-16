@@ -3,40 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Wallet DApp</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script> 
+    <title>DApp Multi-Wallet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
     <script type="module" src="app.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        button { padding: 10px; margin: 5px; cursor: pointer; }
-        input { padding: 8px; width: 200px; margin: 5px; }
-        #walletStatus { font-weight: bold; }
-    </style>
 </head>
 <body>
-
-    <h1>Multi-Wallet DApp</h1>
-
-    <!-- Pilihan Koneksi Wallet -->
+    <h1>DApp Multi-Wallet</h1>
     <button id="connectMetaMask">🔗 Hubungkan MetaMask</button>
     <button id="connectWalletConnect">🔗 Hubungkan WalletConnect</button>
     <p id="walletStatus">Wallet belum terhubung.</p>
-
-    <!-- Input Referral -->
-    <input type="text" id="refWallet" placeholder="Alamat Referral (Opsional)" readonly>
-    
-    <!-- Tombol Klaim Airdrop -->
+    <input type="text" id="refWallet" placeholder="Alamat Referral" readonly>
     <button id="claimAirdrop">🎁 Klaim Airdrop</button>
-
-    <!-- Input untuk BNB & Pembelian Token -->
     <input type="number" id="bnbAmount" placeholder="Jumlah BNB">
     <p>Token yang diterima: <span id="tokenAmount">0</span></p>
     <button id="buyToken">💰 Beli Token</button>
-
-    <!-- Referral Link Generator -->
     <button id="generateRef">🔗 Buat Link Referral</button>
     <p id="refLink">Referral Link akan muncul di sini</p>
     <button id="copyRef">📋 Salin Referral</button>
-
 </body>
 </html>
