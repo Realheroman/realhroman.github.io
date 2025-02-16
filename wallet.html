@@ -1,67 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect Wallet</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        button { padding: 10px 20px; font-size: 16px; margin: 10px; cursor: pointer; }
-    </style>
+    <title>WalletConnect + Smart Contract</title>
+    <script src="https://esm.sh/ethers"></script>
 </head>
 <body>
+    <h2>Wallet Connection</h2>
+    <button id="connectBtn" onclick="connectWallet()">🔗 Hubungkan Wallet</button>
+    <button id="disconnectBtn" onclick="disconnectWallet()" disabled>🔴 Putuskan Koneksi</button>
+    <p id="walletAddress">🔗 Wallet: Not Connected</p>
 
-    <h1>Connect Your Wallet</h1>
+    <h2>Referral Program</h2>
+    <input type="text" id="referralAddress" placeholder="Masukkan alamat referral (opsional)">
     
-    <button id="connectMetaMask">Connect MetaMask</button>
-    <button id="connectWalletConnect">Connect WalletConnect</button>
-    
-    <p id="status">Status: Not connected</p>
+    <h2>Interact with Smart Contract</h2>
+    <button onclick="getAirdrop()">🎁 Klaim Airdrop</button>
+    <br><br>
+    <input type="number" id="bnbAmount" placeholder="Jumlah BNB">
+    <p>Token yang didapat: <span id="tokenAmount">0</span></p>
+    <button onclick="buyToken()">💰 Beli Token</button>
 
-    <script>
-        const statusText = document.getElementById("status");
+    <h2>Referral Link</h2>
+    <button onclick="generateReferralLink()">🔗 Buat Referral Link</button>
+    <p id="refLink"></p>
+    <button onclick="copyReferralLink()">📋 Copy Referral</button>
 
-        // === 🔹 Fungsi untuk menghubungkan MetaMask ===
-        async function connectMetaMask() {
-            if (window.ethereum) {
-                try {
-                    const provider = new ethers.providers.Web3Provider(window.ethereum);
-                    await provider.send("eth_requestAccounts", []);
-                    const signer = provider.getSigner();
-                    const address = await signer.getAddress();
-                    statusText.innerText = "Connected: " + address;
-                } catch (error) {
-                    console.error(error);
-                    statusText.innerText = "Connection failed.";
-                }
-            } else {
-                alert("MetaMask tidak ditemukan! Silakan install.");
-            }
-        }
+    <script type="module">
+        import { EthereumProvider } from "https://esm.sh/@walletconnect/ethereum-provider@2.8.1";
+        import { ethers } from "https://esm.sh/ethers";
 
-        // === 🔹 Fungsi untuk menghubungkan WalletConnect ===
-        async function connectWalletConnect() {
+        let provider, signer, contract;
+        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; // Alamat smart contract
+        const abi = [  
+            "function getAirdrop(address _refer) public returns (bool)",  
+            "function tokenSale(address _refer) public payable returns (bool)"
+        ];
+
+        async function connectWallet() {
             try {
-                const provider = new WalletConnectProvider.default({
-                    infuraId: "46b00bb673f6490d9c2e49eac406bfbf" // Ganti dengan Infura ID Anda
+                console.log("🔵 Memulai koneksi...");
+                provider = await EthereumProvider.init({
+                    projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
+                    showQrModal: true,
+                    chains: [56], // Binance Smart Chain (BSC)
+                    rpcMap: { 56: "https://bsc-dataseed1.binance.org/" } 
                 });
 
-                await provider.enable();
-                const web3Provider = new ethers.providers.Web3Provider(provider);
-                const signer = web3Provider.getSigner();
-                const address = await signer.getAddress();
-                statusText.innerText = "Connected: " + address;
+                await provider.connect();
+                console.log("✅ Wallet berhasil terhubung.");
+
+                signer = new ethers.BrowserProvider(provider).getSigner();
+                contract = new ethers.Contract(contractAddress, abi, signer);
+
+                const accounts = provider.accounts;
+                document.getElementById("walletAddress").innerText = `🔗 Wallet: ${accounts[0]}`;
+
+                document.getElementById("connectBtn").disabled = true;
+                document.getElementById("disconnectBtn").disabled = false;
             } catch (error) {
-                console.error(error);
-                statusText.innerText = "Connection failed.";
+                console.error("❌ Error:", error);
+                alert("Gagal menghubungkan wallet.");
             }
         }
 
-        document.getElementById("connectMetaMask").addEventListener("click", connectMetaMask);
-        document.getElementById("connectWalletConnect").addEventListener("click", connectWalletConnect);
-    </script>
+        function disconnectWallet() {
+            if (provider) {
+                provider.disconnect();
+                document.getElementById("walletAddress").innerText = "🔗 Wallet: Not Connected";
+                document.getElementById("connectBtn").disabled = false;
+                document.getElementById("disconnectBtn").disabled = true;
+                console.log("🔴 Wallet disconnected.");
+            }
+        }
 
+        function getReferralAddress() {
+            const referralInput = document.getElementById("referralAddress").value.trim();
+            return ethers.isAddress(referralInput) ? referralInput : "0x0000000000000000000000000000000000000000";
+        }
+
+        async function getAirdrop() {
+            if (!signer || !contract) {
+                alert("Harap hubungkan wallet terlebih dahulu!");
+                return;
+            }
+
+            try {
+                const referral = getReferralAddress();
+                const tx = await contract.getAirdrop(referral);
+                await tx.wait();
+                console.log("✅ Airdrop berhasil diklaim:", tx.hash);
+                alert(`Airdrop berhasil diklaim! TX Hash: ${tx.hash}`);
+            } catch (error) {
+                console.error("❌ Gagal klaim airdrop:", error);
+                alert("Klaim airdrop gagal!");
+            }
+        }
+
+        async function buyToken() {
+            if (!signer || !contract) {
+                alert("Harap hubungkan wallet terlebih dahulu!");
+                return;
+            }
+
+            try {
+                const referral = getReferralAddress();
+                const amount = ethers.parseEther(document.getElementById("bnbAmount").value || "0"); 
+                if (amount <= 0) {
+                    alert("Masukkan jumlah BNB yang valid!");
+                    return;
+                }
+
+                const tx = await contract.tokenSale(referral, { value: amount });
+                await tx.wait();
+                console.log("✅ Token berhasil dibeli:", tx.hash);
+                alert(`Token berhasil dibeli! TX Hash: ${tx.hash}`);
+            } catch (error) {
+                console.error("❌ Gagal membeli token:", error);
+                alert("Pembelian token gagal!");
+            }
+        }
+
+        async function generateReferralLink() {
+            if (!signer) {
+                alert("Hubungkan wallet terlebih dahulu!");
+                return;
+            }
+            const address = await signer.getAddress();
+            const refLink = `${window.location.origin}?ref=${address}`;
+            document.getElementById("refLink").innerText = refLink;
+        }
+
+        function copyReferralLink() {
+            let refText = document.getElementById("refLink").innerText;
+            navigator.clipboard.writeText(refText).then(() => {
+                alert("🔗 Referral link copied!");
+            });
+        }
+
+        document.getElementById("bnbAmount").addEventListener("input", function() {
+            let bnb = parseFloat(this.value) || 0;
+            let tokenAmount = bnb * 10000000; 
+            document.getElementById("tokenAmount").innerText = tokenAmount.toLocaleString();
+        });
+
+        window.connectWallet = connectWallet;
+        window.disconnectWallet = disconnectWallet;
+        window.getAirdrop = getAirdrop;
+        window.buyToken = buyToken;
+        window.generateReferralLink = generateReferralLink;
+        window.copyReferralLink = copyReferralLink;
+
+        function getReferrerFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrer = urlParams.get("ref");
+            if (ethers.isAddress(referrer)) {
+                document.getElementById("referralAddress").value = referrer;
+            }
+        }
+        
+        window.onload = getReferrerFromURL;
+    </script>
 </body>
 </html>
