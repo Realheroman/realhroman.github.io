@@ -14,7 +14,7 @@ function getReferrerFromURL() {
     }
 }
 
-// 2️⃣ Connect Wallet and Set to Binance Smart Chain
+// 2️⃣ Connect Wallet and Force Binance Smart Chain
 async function connectWallet() {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
@@ -25,14 +25,14 @@ async function connectWallet() {
 
             // Check the current network
             const currentChainId = await ethereum.request({ method: "eth_chainId" });
-            if (currentChainId !== "0x38") { // 0x38 is Binance Smart Chain Mainnet
+
+            if (currentChainId !== "0x38") { // 0x38 = Binance Smart Chain Mainnet
                 try {
                     await ethereum.request({
                         method: "wallet_switchEthereumChain",
                         params: [{ chainId: "0x38" }],
                     });
                 } catch (switchError) {
-                    // If the chain is not added, request to add it
                     if (switchError.code === 4902) {
                         await ethereum.request({
                             method: "wallet_addEthereumChain",
@@ -45,7 +45,8 @@ async function connectWallet() {
                             }],
                         });
                     } else {
-                        throw switchError;
+                        console.error("Failed to switch network:", switchError);
+                        alert("Please switch to Binance Smart Chain manually in your wallet.");
                     }
                 }
             }
@@ -54,8 +55,12 @@ async function connectWallet() {
         } catch (error) {
             console.error("User denied wallet connection");
         }
+    } else if (window.web3) {
+        web3 = new Web3(window.web3.currentProvider);
+        userAccount = web3.eth.accounts[0];
+        document.getElementById("connectWallet").innerText = `✅ Connected: ${userAccount.substring(0, 6)}...`;
     } else {
-        alert("Please install MetaMask or Trust Wallet.");
+        alert("Please use MetaMask or Trust Wallet.");
     }
 }
 
