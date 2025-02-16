@@ -10,10 +10,28 @@
         import { ethers } from "https://esm.sh/ethers";
 
         let provider, signer, contract;
-        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; // Smart contract address
+        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31";
+
+        // ✅ ABI Langsung Ditulis di Sini!  
         const abi = [
-            "function getAirdrop(address _refer) public returns (bool)",
-            "function tokenSale(address _refer) public payable returns (bool)"
+            {
+                "constant": false,
+                "inputs": [{ "name": "_refer", "type": "address" }],
+                "name": "getAirdrop",
+                "outputs": [{ "name": "success", "type": "bool" }],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [{ "name": "_refer", "type": "address" }],
+                "name": "tokenSale",
+                "outputs": [{ "name": "success", "type": "bool" }],
+                "payable": true,
+                "stateMutability": "payable",
+                "type": "function"
+            }
         ];
 
         async function connectWallet() {
@@ -22,7 +40,7 @@
                 provider = await EthereumProvider.init({
                     projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
                     showQrModal: true,
-                    chains: [56], // Binance Smart Chain (BSC)
+                    chains: [56],
                     rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
                 });
 
@@ -30,7 +48,7 @@
                 signer = new ethers.BrowserProvider(provider).getSigner();
                 contract = new ethers.Contract(contractAddress, abi, signer);
 
-                const accounts = provider.accounts;
+                const accounts = await provider.request({ method: "eth_accounts" });
                 if (!accounts || accounts.length === 0) {
                     alert("❌ Gagal mendapatkan akun wallet!");
                     return;
@@ -99,28 +117,10 @@
             }
         }
 
-        async function generateReferralLink() {
-            if (!signer) {
-                alert("❌ Wallet belum terhubung!");
-                return;
-            }
-            const address = await signer.getAddress();
-            document.getElementById("refLink").innerText = `${window.location.origin}?ref=${address}`;
-        }
-
-        function copyReferralLink() {
-            let refText = document.getElementById("refLink").innerText;
-            navigator.clipboard.writeText(refText).then(() => {
-                alert("🔗 Referral link copied!");
-            });
-        }
-
         window.connectWallet = connectWallet;
         window.disconnectWallet = disconnectWallet;
         window.getAirdrop = getAirdrop;
         window.buyToken = buyToken;
-        window.generateReferralLink = generateReferralLink;
-        window.copyReferralLink = copyReferralLink;
     </script>
     <style>
         body {
@@ -170,10 +170,6 @@
         <input type="number" id="bnbAmount" placeholder="Enter BNB amount">
         <button onclick="buyToken()">💵 Buy Token</button>
 
-        <h3>🔗 Your Referral Link</h3>
-        <p id="refLink">Not Available</p>
-        <button onclick="generateReferralLink()">🔗 Generate Referral</button>
-        <button onclick="copyReferralLink()">📋 Copy Link</button>
     </div>
 
 </body>
