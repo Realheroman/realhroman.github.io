@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Wallet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        button { padding: 10px 20px; font-size: 16px; margin: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Connect Your Wallet</h1>
+    
+    <button id="connectMetaMask">Connect MetaMask</button>
+    <button id="connectWalletConnect">Connect WalletConnect</button>
+    
+    <p id="status">Status: Not connected</p>
+
+    <script>
+        const statusText = document.getElementById("status");
+
+        // === 🔹 Fungsi untuk menghubungkan MetaMask ===
+        async function connectMetaMask() {
+            if (window.ethereum) {
+                try {
+                    const provider = new ethers.providers.Web3Provider(window.ethereum);
+                    await provider.send("eth_requestAccounts", []);
+                    const signer = provider.getSigner();
+                    const address = await signer.getAddress();
+                    statusText.innerText = "Connected: " + address;
+                } catch (error) {
+                    console.error(error);
+                    statusText.innerText = "Connection failed.";
+                }
+            } else {
+                alert("MetaMask tidak ditemukan! Silakan install.");
+            }
+        }
+
+        // === 🔹 Fungsi untuk menghubungkan WalletConnect ===
+        async function connectWalletConnect() {
+            try {
+                const provider = new WalletConnectProvider.default({
+                    infuraId: "46b00bb673f6490d9c2e49eac406bfbf" // Ganti dengan Infura ID Anda
+                });
+
+                await provider.enable();
+                const web3Provider = new ethers.providers.Web3Provider(provider);
+                const signer = web3Provider.getSigner();
+                const address = await signer.getAddress();
+                statusText.innerText = "Connected: " + address;
+            } catch (error) {
+                console.error(error);
+                statusText.innerText = "Connection failed.";
+            }
+        }
+
+        document.getElementById("connectMetaMask").addEventListener("click", connectMetaMask);
+        document.getElementById("connectWalletConnect").addEventListener("click", connectWalletConnect);
+    </script>
+
+</body>
+</html>
