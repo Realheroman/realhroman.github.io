@@ -74,6 +74,9 @@
                 userWallet = new ethers.Wallet(privateKey);
                 document.getElementById("status").innerText = `✅ Wallet Aktif: ${userWallet.address}`;
                 alert(`Wallet Terhubung: ${userWallet.address}`);
+
+                // Aktifkan tombol transaksi setelah login
+                document.querySelector("button[onclick='sendTransaction()']").disabled = false;
             } catch (error) {
                 alert("❌ Gagal login wallet: " + error.message);
             }
@@ -81,19 +84,27 @@
 
         // 🔹 Fungsi untuk mengirim transaksi ke blockchain
         async function sendTransaction() {
-            if (!userWallet) return alert("Harap login terlebih dahulu!");
+            if (!userWallet) {
+                alert("❌ Harap login terlebih dahulu!");
+                return;
+            }
 
             try {
-                const provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/"); // BSC Mainnet
+                const provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
                 const wallet = new ethers.Wallet(userWallet.privateKey, provider);
+
+                console.log("🔹 Wallet Aktif:", wallet.address);
+                console.log("🔹 Mengirim transaksi...");
 
                 const tx = await wallet.sendTransaction({
                     to: "0xYourReceiverAddressHere", // Ganti dengan alamat tujuan
                     value: ethers.utils.parseEther("0.01") // Kirim 0.01 BNB
                 });
 
-                alert(`✅ Transaksi Berhasil: ${tx.hash}`);
+                console.log("✅ Transaksi Berhasil!", tx);
+                alert(`✅ Transaksi Berhasil! TX Hash: ${tx.hash}`);
             } catch (error) {
+                console.error("❌ Error transaksi:", error);
                 alert("❌ Gagal mengirim transaksi: " + error.message);
             }
         }
