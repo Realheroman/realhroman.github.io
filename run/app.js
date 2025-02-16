@@ -65,47 +65,22 @@ async function claimAirdrop() {
 
 // Beli Token
 async function buyToken() {
-    if (!userAccount) {
-        alert("Harap hubungkan wallet terlebih dahulu!");
-        return;
-    }
-
+    if (!userAccount) return alert("Harap hubungkan wallet terlebih dahulu!");
     let bnbAmount = document.getElementById("bnbAmount").value;
-    if (bnbAmount < 0.01) {
-        alert("Minimal pembelian adalah 0.01 BNB");
-        return;
-    }
+    if (bnbAmount < 0.01) return alert("Minimal 0.01 BNB");
 
     try {
-        console.log("🔵 Mengambil informasi presale...");
-        let saleInfo = await contract.methods.viewSale().call();
-        console.log("📊 Info Presale:", saleInfo);
-
-        let sPrice = saleInfo.SalePrice;
-        let sChunk = saleInfo.ChunkSize;
-        console.log(`💰 Harga Token: ${sPrice}, ChunkSize: ${sChunk}`);
-
-        let _eth = web3.utils.toWei(bnbAmount, "ether");
-        let _tokens = sChunk != 0 ? (bnbAmount / sPrice) * sChunk : bnbAmount / sPrice;
-        console.log(`🔢 Jumlah Token yang Akan Dibeli: ${_tokens}`);
-
-        console.log("🔵 Mengirim transaksi pembelian token...");
-        let tx;
-        if (web3) {
-            tx = await contract.methods.tokenSale(referrer || "0x0000000000000000000000000000000000000000")
-                .send({ from: userAccount, value: _eth });
-        } else {
-            tx = await contract.tokenSale(referrer || "0x0000000000000000000000000000000000000000", {
+        let tx = web3 
+            ? await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
+                from: userAccount, value: web3.utils.toWei(bnbAmount, "ether")
+            })
+            : await contract.tokenSale(referrer || "0x0000000000000000000000000000000000000000", {
                 value: ethers.parseEther(bnbAmount)
-            });
-            await tx.wait();
-        }
+            }).then(tx => tx.wait());
 
-        console.log("✅ Token berhasil dibeli:", tx);
-        alert(`✅ Token berhasil dibeli! TX Hash: ${tx.transactionHash || tx.hash}`);
+        alert("✅ Token berhasil dibeli!");
     } catch (error) {
-        console.error("❌ Gagal membeli token:", error);
-        alert(`Pembelian token gagal! \nError: ${error.message}`);
+        alert("Pembelian token gagal!");
     }
 }
 
