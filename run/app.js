@@ -53,71 +53,36 @@ async function connectWallet(method) {
 
 // 3️⃣ Claim Airdrop
 async function claimAirdrop() {
-    if (!userAccount) return alert("Harap hubungkan wallet terlebih dahulu!");
-
+    if (!userAccount) return alert("Connect your wallet first!");
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
     try {
-        console.log("🔵 Mencoba klaim airdrop...");
-        console.log("🛠️ Contract:", contract);
-        console.log("🛠️ User Account:", userAccount);
-
-        if (!contract) throw new Error("Contract tidak terhubung!");
-        
-        let tx;
-        if (window.web3) {
-            // MetaMask
-            tx = await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
-        } else {
-            // WalletConnect
-            tx = await contract.getAirdrop(userAccount);
-            await tx.wait();
-        }
-
-        console.log("✅ Airdrop berhasil:", tx);
-        alert("🎉 Airdrop berhasil diklaim!");
+        await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
+        alert("🎉 Airdrop successfully claimed!");
     } catch (error) {
-        console.error("❌ Error klaim airdrop:", error);
-        alert(`Klaim airdrop gagal! \nError: ${error.message}`);
+        console.error(error);
+        alert("Airdrop claim failed!");
     }
 }
 
 // 4️⃣ Buy Token dengan Referral
 async function buyToken() {
-    if (!userAccount) return alert("Harap hubungkan wallet terlebih dahulu!");
-
+    if (!userAccount) return alert("Connect your wallet first!");
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
-    if (bnbAmount < 0.01) return alert("Minimum pembelian adalah 0.01 BNB");
+    if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB.");
 
+    let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
     try {
-        console.log("🔵 Mencoba membeli token...");
-        console.log("🛠️ Contract:", contract);
-        console.log("🛠️ User Account:", userAccount);
-        console.log("🛠️ BNB Amount:", bnbAmount);
-
-        if (!contract) throw new Error("Contract tidak terhubung!");
-
-        let tx;
-        if (window.web3) {
-            // MetaMask
-            tx = await contract.methods.tokenSale(referrer || "0x0000000000000000000000000000000000000000").send({
-                from: userAccount,
-                value: window.web3.utils.toWei(bnbAmount, "ether")
-            });
-        } else {
-            // WalletConnect
-            tx = await contract.tokenSale(referrer || "0x0000000000000000000000000000000000000000", {
-                value: ethers.parseEther(bnbAmount)
-            });
-            await tx.wait();
-        }
-
-        console.log("✅ Token berhasil dibeli:", tx);
-        alert(`✅ Token berhasil dibeli! TX Hash: ${tx.transactionHash || tx.hash}`);
+        await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
+            from: userAccount,
+            value: web3.utils.toWei(bnbAmount, "ether")
+        });
+        alert(`✅ Successfully purchased ${tokenAmount} $BWAR.`);
     } catch (error) {
-        console.error("❌ Error beli token:", error);
-        alert(`Pembelian token gagal! \nError: ${error.message}`);
+        console.error(error);
+        alert("Transaction failed!");
     }
 }
-
 // 5️⃣ Generate Referral Link
 async function generateReferralLink() {
     if (!userAccount) return alert("Hubungkan wallet terlebih dahulu!");
