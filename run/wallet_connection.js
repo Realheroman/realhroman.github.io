@@ -1,3 +1,4 @@
+import Web3 from "https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js";
 import { EthereumProvider } from "https://esm.sh/@walletconnect/ethereum-provider@2.8.1";
 import { ethers } from "https://esm.sh/ethers";
 
@@ -5,12 +6,11 @@ let provider, signer;
 let userAccount = null;
 let web3;
 
-// 1️⃣ Koneksi MetaMask atau Trust Wallet
+// 1️⃣ Koneksi MetaMask atau Trust Wallet (Menggunakan Ethereum atau WalletConnect)
 async function connectMetaMask() {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         try {
-            // Meminta akses akun wallet
             const accounts = await ethereum.request({ method: "eth_requestAccounts" });
             userAccount = accounts[0];
             document.getElementById("walletAddress").innerText = `🔗 Wallet: ${userAccount}`;
@@ -23,12 +23,12 @@ async function connectMetaMask() {
     }
 }
 
-// 2️⃣ Koneksi WalletConnect V2
+// 2️⃣ Koneksi WalletConnect dengan Trust Wallet
 async function connectWalletConnect() {
     try {
         console.log("🔵 Connecting WalletConnect...");
         provider = await EthereumProvider.init({
-            projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
+            projectId: "2891d08b2b53e94b9c8ec031af88d6a9", // Ganti dengan project ID WalletConnect kamu
             showQrModal: true,
             chains: [56], // Binance Smart Chain (BSC)
             rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
@@ -59,5 +59,5 @@ function disconnectWallet() {
     }
 }
 
-// Ekspor fungsi untuk digunakan di app.js
+// 4️⃣ Ekspor fungsi agar bisa digunakan di app.js
 export { connectMetaMask, connectWalletConnect, disconnectWallet, userAccount, web3 };
