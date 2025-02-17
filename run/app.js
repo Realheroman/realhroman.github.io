@@ -39,13 +39,7 @@ async function buyToken() {
 
     let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
 
-    // Cek saldo BNB pengguna
-    const balance = await web3.eth.getBalance(userAccount);
-    const userBalance = web3.utils.fromWei(balance, "ether");
-    if (parseFloat(userBalance) < parseFloat(bnbAmount)) {
-        return alert("Insufficient BNB balance");
-    }
-
+   
     // Cek apakah presale aktif
     try {
         const saleInfo = await contract.methods.viewSale().call();
