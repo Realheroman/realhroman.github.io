@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ShabiidogeAi - Meme Coin Revolution</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<style>
+    body {
+        background: #000;
+        color: white;
+        font-family: 'Arial', sans-serif;
+    }
+    .navbar {
+        background: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        transition: background 0.3s;
+    }
+    .navbar.scrolled {
+        background: rgba(0, 0, 0, 0.95);
+    }
+    .btn-solana {
+        background: linear-gradient(90deg, #19FB9B, #00FFFF);
+        color: black;
+        font-weight: bold;
+        padding: 14px 35px;
+        border-radius: 30px;
+        font-size: 1.3rem;
+        text-decoration: none;
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-solana:hover {
+        background: linear-gradient(90deg, #00FFFF, #19FB9B);
+        box-shadow: 0 8px 20px rgba(0, 255, 163, 0.6);
+    }
+    .hero {
+        position: relative;
+        text-align: center;
+        min-height: auto; /* Menghilangkan tinggi minimum agar sesuai konten */
+        padding: 60px 0; /* Memberikan ruang secukupnya */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        max-width: 1200px; /* Membatasi lebar agar tidak terlalu besar */
+        width: 100%;
+    }
+    #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    .footer {
+        text-align: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 -5px 20px rgba(0, 255, 163, 0.3);
+    }
+    .social-icons a {
+        font-size: 2rem;
+        color: #00FFA3;
+        margin: 0 10px;
+        transition: 0.3s ease-in-out;
+    }
+    .social-icons a:hover {
+        color: #19FB9B;
+        transform: scale(1.2);
+    }
+    
+</style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="#">ShabiidogeAi</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div id="particles-js"></div>
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4" data-aos="fade-right">
+                    <img src="shabii.png" alt="ShabiidogeAi Logo" class="img-fluid" style="border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);">
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <h1 class="fw-bold display-3 text-uppercase" style="color: #00FFA3;">ShabiidogeAi</h1>
+                    <h2 class="fw-bold mb-3">The Future of Meme Coins on Solana</h2>
+                    <p class="fs-5 text-light">
+                        <strong>Shiba + Doge + AI</strong> – a revolutionary meme coin powered by  
+                        <strong>Solana’s ultra-fast blockchain.</strong> Experience <strong>low fees, instant transactions, and a  
+                        thriving community</strong> in the next big meme coin movement!
+                    </p>
+                    
+                </div>
+            </div>
+        </div></section>
+         <!-- Box untuk Contract Address -->
+        <center><div class="ca-box mt-4">
+            <label for="contractAddress" class="form-label">📜 Contract Address</label>
+            <div class="input-group">
+                <input type="text" id="contractAddress" class="form-control" value="F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump" readonly>
+                <button class="btn btn-copy" onclick="copyCA()">📋 Copy</button></center>
+            </div>
+        </div>
+  
+
+
+        <!-- DEX & Tracking Tools Section -->
+<section class="container text-center my-5" data-aos="fade-up">
+    <h2 class="fw-bold text-uppercase" style="color: #00FFA3; text-shadow: 0 3px 10px rgba(0, 255, 163, 0.6);">
+        🚀 Trade & Track ShabiiDogeAi
+    </h2>
+    <p class="fs-5 text-light">Buy, trade, and track $ShabiiDogeAi on the best Solana platforms.</p>
+
+    <div class="row mt-4">
+        <!-- Pump.fun -->
+        <div class="col-md-3 col-6 mb-3">
+            <a href="https://pump.fun/F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump" target="_blank" class="btn btn-pump w-100 p-3">
+                <img src="https://upload.wikimedia.org/wikipedia/en/b/bd/Pump_fun_logo.png" alt="Pump.fun" width="30" class="me-2">
+                Pump.fun
+            </a>
+        </div>
+
+        <!-- DexTools -->
+        <div class="col-md-3 col-6 mb-3">
+            <a href="https://www.dextools.io/app/solana/pair-explorer/F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump" target="_blank" class="btn btn-dextools w-100 p-3">
+                <img src="https://images.seeklogo.com/logo-png/43/1/dextools-logo-png_seeklogo-431922.png" alt="DexTools" width="30" class="me-2">
+                DexTools
+            </a>
+        </div>
+
+        <!-- DexScreener -->
+        <div class="col-md-3 col-6 mb-3">
+            <a href="https://dexscreener.com/solana/F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump" target="_blank" class="btn btn-dexscreener w-100 p-3">
+                <img src="https://dexscreener.com/favicon.ico" alt="DexScreener" width="30" class="me-2">
+                DexScreener
+            </a>
+        </div>
+
+        <!-- Birdeye -->
+        <div class="col-md-3 col-6 mb-3">
+            <a href="https://birdeye.so/token/F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump?chain=solana" target="_blank" class="btn btn-birdeye w-100 p-3">
+                <img src="https://birdeye.so/favicon.ico" alt="Birdeye" width="30" class="me-2">
+                Birdeye
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Custom Button Styles -->
+<style>
+    .btn-pump {
+        background: linear-gradient(90deg, #FF5A5A, #FF1E1E);
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(255, 30, 30, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-pump:hover {
+        background: linear-gradient(90deg, #FF1E1E, #FF5A5A);
+        box-shadow: 0 8px 20px rgba(255, 30, 30, 0.6);
+        transform: scale(1.05);
+    }
+
+    .btn-dextools {
+        background: linear-gradient(90deg, #0066FF, #0044CC);
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(0, 102, 255, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-dextools:hover {
+        background: linear-gradient(90deg, #0044CC, #0066FF);
+        box-shadow: 0 8px 20px rgba(0, 102, 255, 0.6);
+        transform: scale(1.05);
+    }
+
+    .btn-dexscreener {
+        background: linear-gradient(90deg, #FFD700, #FFA500);
+        color: black;
+        font-weight: bold;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(255, 165, 0, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-dexscreener:hover {
+        background: linear-gradient(90deg, #FFA500, #FFD700);
+        box-shadow: 0 8px 20px rgba(255, 165, 0, 0.6);
+        transform: scale(1.05);
+    }
+
+    .btn-birdeye {
+        background: linear-gradient(90deg, #19FB9B, #00FFFF);
+        color: black;
+        font-weight: bold;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-birdeye:hover {
+        background: linear-gradient(90deg, #00FFFF, #19FB9B);
+        box-shadow: 0 8px 20px rgba(0, 255, 163, 0.6);
+        transform: scale(1.05);
+    }
+</style>
+        
+        
+        
+        
+        
+        
+        
+        
+        </section>
+    <div class="col-lg-6 mb-4" data-aos="fade-right">
+                  <center><img src="shabii2.png" alt="ShabiidogeAi Logo" class="img-fluid" style="border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);">
+                </div></center>
+    
+    <!-- Launch Announcement Section -->
+<section class="container my-5" data-aos="fade-up">
+    <div class="launch-box p-4">
+        <!-- Judul dalam Box -->
+        <div class="launch-header text-center">
+            <h2 class="fw-bold">🚀 ShabiiDogeAi Launch Announcement! 🎯</h2>
+        </div>
+        
+        <!-- Isi Pengumuman -->
+        <div class="launch-content mt-4">
+            <p class="fs-5 text-light"><strong>📅 February 13th</strong>, dropping on: <span class="highlight">pump.fun</span> — <strong>Let’s PUMP!</strong> 🚀</p>
+            
+            <ul class="list-unstyled mt-3">
+                <li><i class="bi bi-check-circle-fill highlight"></i> <strong>Fair launch</strong> — no team tokens, no games And No Rug.</li>
+                <li><i class="bi bi-fire highlight"></i> <strong>100% liquidity burned</strong> 🔥</li>
+            </ul>
+
+            <p class="mt-3"><strong>We are the bow. The community is the arrow. We launch, you fly.🏹</strong></p>
+            <p class="mt-3">💰 <strong>Price set by YOU, the people.</strong></p>
+            <p class="mt-3">💡 Got questions? We’re all about transparency. Follow to stay updated!</p>
+        </div>
+
+        <!-- Box untuk Contract Address -->
+        <div class="ca-box mt-4">
+            <label for="contractAddress" class="form-label">📜 Contract Address</label>
+            <div class="input-group">
+                <input type="text" id="contractAddress" class="form-control" value="F5iNeXDDion6NHgDqV65nZvUQuUxpE1RyfM66Fvcpump" readonly>
+                <button class="btn btn-copy" onclick="copyCA()">📋 Copy</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Custom CSS -->
+<style>
+    .launch-box {
+        border-radius: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);
+        padding: 20px;
+        text-align: center;
+    }
+    .launch-header {
+        background: linear-gradient(90deg, #19FB9B, #00FFFF);
+        padding: 15px;
+        border-radius: 10px;
+        color: black;
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
+    }
+    .highlight {
+        color: #00FFA3;
+        font-weight: bold;
+    }
+    .ca-box {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.4);
+    }
+    .btn-copy {
+        background: linear-gradient(90deg, #00FFFF, #19FB9B);
+        color: black;
+        font-weight: bold;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: 0.3s ease-in-out;
+    }
+    .btn-copy:hover {
+        background: linear-gradient(90deg, #19FB9B, #00FFFF);
+        box-shadow: 0 6px 15px rgba(0, 255, 163, 0.6);
+    }
+</style>
+
+<!-- Copy Function -->
+<script>
+    function copyCA() {
+        var copyText = document.getElementById("contractAddress");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Contract Address copied: " + copyText.value);
+    }
+</script>
+
+
+
+
+<div class="col-lg-6 mb-4" data-aos="fade-right"><center>
+                    <img src="shabii1.png" alt="ShabiidogeAi Logo" class="img-fluid" style="border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);">
+</div></center>
+    
+   <!-- White Paper Section -->
+<section class="container my-5" data-aos="fade-up">
+    <div class="text-center">
+        <h2 class="fw-bold text-uppercase" style="color: #00FFA3;">ShabiiDogeAi White Paper</h2>
+    </div>
+    <div class="p-4 mt-4" style="border-radius: 15px; background: rgba(0, 0, 0, 0.8); box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);">
+        <h3 class="fw-bold text-uppercase" style="color: #00FFA3;">1. Introduction</h3>
+        <p class="fs-5"><strong>ShabiiDogeAi White Paper</strong></p>
+        
+        <h4 class="fw-bold text-uppercase mt-3" style="color: #00FFA3;">Abstract</h4>
+        <p>ShabiiDogeAi is an innovative memecoin project that merges the playful essence of meme culture with the transformative power of artificial intelligence (AI) and blockchain technology.</p>
+        <p>Our mission is to create a fun, engaging, and community-driven ecosystem that not only entertains but also provides practical payment solutions and seamless token swaps.</p>
+
+        <h4 class="fw-bold text-uppercase mt-4" style="color: #00FFA3;">Introduction</h4>
+        <p>The rise of memecoins has revolutionized the cryptocurrency landscape, attracting a diverse audience and fostering a unique culture. ShabiiDogeAi aims to capitalize on this trend by creating a token that embodies creativity, community, and fun while offering real-world utility through payment functionalities and token swaps.</p>
+
+        <h4 class="fw-bold text-uppercase mt-4" style="color: #00FFA3;">Vision and Mission</h4>
+        
+        <h5 class="fw-bold mt-3" style="color: #00FFA3;">Vision</h5>
+        <p>To become a leading memecoin that combines the spirit of community and creativity with advanced AI technology, making a positive impact on the cryptocurrency space.</p>
+
+        <h5 class="fw-bold mt-3" style="color: #00FFA3;">Mission</h5>
+        <ul class="list-unstyled">
+            <li><i class="bi bi-check-circle-fill" style="color: #00FFA3;"></i> To build a vibrant community around the ShabiiDogeAi token.</li>
+            <li><i class="bi bi-check-circle-fill" style="color: #00FFA3;"></i> To provide innovative payment solutions that enhance user experience.</li>
+            <li><i class="bi bi-check-circle-fill" style="color: #00FFA3;"></i> To facilitate seamless token swaps within our ecosystem.</li>
+            <li><i class="bi bi-check-circle-fill" style="color: #00FFA3;"></i> To promote charitable initiatives and support causes that resonate with our community.</li>
+        </ul>
+    </div>
+</section><div class="col-lg-6 mb-4" data-aos="fade-right"><center>
+                    <img src="shabii3.png" alt="ShabiidogeAi Logo" class="img-fluid" style="border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 255, 163, 0.4);">
+                </div></center>
+    
+    <!-- FAQ Section -->
+<section class="container my-5" data-aos="fade-up">
+    <h2 class="fw-bold text-uppercase text-center" style="color: #00FFA3; text-shadow: 0 3px 10px rgba(0, 255, 163, 0.6);">
+        📖 ShabiiDogeAi FAQ
+    </h2>
+    <p class="text-center fs-5 text-light">Your questions, answered!</p>
+
+    <div class="accordion mt-4" id="faqAccordion">
+        <!-- Question 1 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    ❓ What is ShabiiDogeAi?
+                </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    ShabiiDogeAi is a next-generation memecoin combining **meme culture, AI, and blockchain technology**. Our goal is to create a **fun, engaging, and community-driven ecosystem** with real utility through payments and token swaps.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow mt-3">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    🚀 What is the vision and mission of ShabiiDogeAi?
+                </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    <strong>Vision:</strong> To become the **ultimate AI-powered memecoin**, uniting community spirit and cutting-edge technology.<br><br>
+                    <strong>Mission:</strong>  
+                    <ul class="list-unstyled">
+                        <li>✔ Build a strong community-driven ecosystem.</li>
+                        <li>✔ Provide innovative payment solutions.</li>
+                        <li>✔ Enable seamless token swaps.</li>
+                        <li>✔ Support charitable causes chosen by the community.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow mt-3">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    🔥 Does the team hold any tokens at launch?
+                </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    **No team tokens. No hidden games.**  
+                    ShabiiDogeAi follows a **fair launch policy**, ensuring a transparent and trustless ecosystem where **the community holds all power**.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow mt-3">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    💰 How is liquidity secured?
+                </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    **100% Liquidity Burned** 🔥  
+                    This means no one, not even the developers, can remove liquidity, ensuring **a safe and fair trading experience for all**.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow mt-3">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    🏹 What does "We launch, you fly" mean?
+                </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    We are **the bow**, the community is **the arrow**.  
+                    **ShabiiDogeAi launches the project, but YOU take it to the moon!** 🌕  
+                    The future of the project is in the hands of **our holders and supporters**.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="accordion-item bg-dark border-0 rounded-3 shadow mt-3">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-dark text-light fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                    🔗 Where can I buy ShabiiDogeAi?
+                </button>
+            </h2>
+            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-light">
+                    ShabiiDogeAi launches **February 13th** on **Pump.fun** 🎯  
+                    **Be ready to PUMP!** 🚀 Follow our socials for real-time updates.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 ShabiidogeAi. All Rights Reserved.</p>
+        <div class="social-icons mt-3">
+            <a href="https://x.com/ShabiiDoge_Ai"><i class="bi bi-twitter"></i></a>
+            <a href="https://t.co/arlrvGHcJJ"><i class="bi bi-telegram"></i></a>
+            
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener("scroll", function () {
+            let navbar = document.querySelector(".navbar");
+            navbar.classList.toggle("scrolled", window.scrollY > 50);
+        });
+
+        // Initialize AOS
+        AOS.init();
+
+        // Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 100 },
+                size: { value: 3 },
+                move: { speed: 2 },
+                color: { value: "#00FFA3" },
+                line_linked: { enable: true, color: "#00FFA3" }
+            }
+        });
+    </script>
+    
+    <style>
+    #rocket {
+        position: absolute;
+        width: 150px;
+        height: auto;
+        transition: transform 0.1s linear;
+    }
+</style>
+
+<div class="flying-image"></div>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #111;
+        height: 200vh; /* Agar halaman bisa digulir */
+    }
+
+    .flying-image {
+        position: fixed;
+        width: 100px;
+        height: 100px;
+        background-image: url('tothemoon.png'); /* Ganti dengan URL gambar PNG */
+        background-size: cover;
+        animation: fly 8s cubic-bezier(0.42, 0, 0.58, 1) infinite, glow 1.5s ease-in-out infinite alternate;
+        border-radius: 10%;
+        z-index: 9999;
+    }
+
+    @keyframes fly {
+        0% {
+            left: 10%;
+            top: 10%;
+        }
+        20% {
+            left: 40%;
+            top: 20%;
+        }
+        40% {
+            left: 80%;
+            top: 10%;
+        }
+        60% {
+            left: 50%;
+            top: 70%;
+        }
+        80% {
+            left: 20%;
+            top: 80%;
+        }
+        100% {
+            left: 90%;
+            top: 90%;
+        }
+    }
+
+    @keyframes glow {
+        0% {
+            filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.7)) 
+                    drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.5)) 
+                    drop-shadow(0px 0px 30px rgba(255, 255, 255, 0.3));
+        }
+        100% {
+            filter: drop-shadow(0px 0px 15px rgba(0, 255, 255, 0.8)) 
+                    drop-shadow(0px 0px 30px rgba(138, 43, 226, 0.6)) /* Warna ungu */
+                    drop-shadow(0px 0px 50px rgba(255, 105, 180, 0.4)); /* Warna pink futuristik */
+        }
+    }
+</style>
+</body>
+</html>
