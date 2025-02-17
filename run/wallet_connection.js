@@ -5,64 +5,12 @@ let provider, signer;
 let userAccount = null;
 let web3;
 
-// Fungsi untuk memastikan koneksi ke Binance Smart Chain (BSC)
-async function connectToBSC() {
-    if (window.ethereum) {
-        const chainId = '0x38'; // Chain ID untuk Binance Smart Chain (BSC)
-
-        // Mengecek apakah wallet sudah terhubung ke BSC
-        const currentChainId = await ethereum.request({ method: 'eth_chainId' });
-
-        if (currentChainId !== chainId) {
-            try {
-                // Meminta MetaMask untuk beralih ke Binance Smart Chain
-                await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: chainId }]
-                });
-                console.log("Successfully switched to Binance Smart Chain");
-            } catch (switchError) {
-                // Jika pengguna belum menambahkan BSC ke MetaMask, menambahkannya secara otomatis
-                if (switchError.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: chainId,
-                                chainName: 'Binance Smart Chain',
-                                nativeCurrency: {
-                                    name: 'Binance Coin',
-                                    symbol: 'BNB',
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://bsc-dataseed1.binance.org/'],
-                                blockExplorerUrls: ['https://bscscan.com']
-                            }]
-                        });
-                        console.log("Binance Smart Chain has been added to MetaMask");
-                    } catch (addError) {
-                        console.error("Failed to add Binance Smart Chain:", addError);
-                    }
-                } else {
-                    console.error("Failed to switch to Binance Smart Chain:", switchError);
-                }
-            }
-        } else {
-            console.log("Already connected to Binance Smart Chain");
-        }
-    } else {
-        alert("Please install MetaMask!");
-    }
-}
-
 // 1️⃣ Koneksi MetaMask atau Trust Wallet
 async function connectMetaMask() {
     if (window.ethereum) {
         web3 = new Web3(window.ethereum);
         try {
-            // Pastikan wallet terhubung ke BSC
-            await connectToBSC();
-
+            // Meminta akses akun wallet
             const accounts = await ethereum.request({ method: "eth_requestAccounts" });
             userAccount = accounts[0];
             document.getElementById("walletAddress").innerText = `🔗 Wallet: ${userAccount}`;
@@ -83,7 +31,7 @@ async function connectWalletConnect() {
             projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
             showQrModal: true,
             chains: [56], // Binance Smart Chain (BSC)
-            rpcMap: { 56: "https://rpc.ankr.com/bsc" }
+            rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
         });
 
         await provider.connect();
@@ -91,11 +39,8 @@ async function connectWalletConnect() {
 
         const walletProvider = new ethers.BrowserProvider(provider);
         signer = await walletProvider.getSigner();
-
-        // Pastikan wallet terhubung ke BSC
-        await connectToBSC();
-
         const accounts = await walletProvider.send("eth_accounts", []);
+
         userAccount = accounts[0];
         document.getElementById("walletAddress").innerText = `🔗 Wallet: ${userAccount}`;
     } catch (error) {
@@ -114,5 +59,5 @@ function disconnectWallet() {
     }
 }
 
-// 4️⃣ Ekspor fungsi agar bisa digunakan di app.js
+// Ekspor fungsi untuk digunakan di app.js
 export { connectMetaMask, connectWalletConnect, disconnectWallet, userAccount, web3 };
