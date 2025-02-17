@@ -30,20 +30,49 @@ async function claimAirdrop() {
 // 3️⃣ Buy Token (Presale) dengan Referral
 async function buyToken() {
     if (!userAccount) return alert("Connect wallet first!");
+
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
+
+    // Validasi jumlah BNB yang dimasukkan
     if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB");
 
     let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
+
+    // Cek saldo BNB pengguna
+    const balance = await web3.eth.getBalance(userAccount);
+    const userBalance = web3.utils.fromWei(balance, "ether");
+    if (parseFloat(userBalance) < parseFloat(bnbAmount)) {
+        return alert("Insufficient BNB balance");
+    }
+
+    // Cek apakah presale aktif
+    try {
+        const saleInfo = await contract.methods.viewSale().call();
+        console.log("Sale Info:", saleInfo); // Debug sale info
+        const currentBlock = await web3.eth.getBlockNumber();
+        
+        // Pastikan sale aktif (misalnya sale dimulai setelah blok tertentu)
+        if (currentBlock < saleInfo.StartBlock || currentBlock > saleInfo.EndBlock) {
+            return alert("Token sale is not active right now.");
+        }
+    } catch (error) {
+        console.error("Error checking sale status:", error);
+        return alert("Failed to check sale status.");
+    }
+
+    // Kirim transaksi untuk membeli token
     try {
         await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
             from: userAccount,
-            value: web3.utils.toWei(bnbAmount, "ether")
+            value: web3.utils.toWei(bnbAmount, "ether"),
+            gas: 200000,  // Tentukan gas limit
+            gasPrice: web3.utils.toWei('5', 'gwei')  // Tentukan gas price
         });
         alert(`✅ Purchased ${tokenAmount} $BWAR`);
     } catch (error) {
-        console.error(error);
-        alert("Transaction failed!");
+        console.error("Error during token purchase:", error);  // Menampilkan error yang lebih jelas
+        alert("Transaction failed! " + error.message);  // Menampilkan pesan error
     }
 }
 
