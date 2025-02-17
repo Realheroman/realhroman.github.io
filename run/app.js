@@ -30,11 +30,14 @@ async function claimAirdrop() {
 // 3️⃣ Buy Token (Presale) dengan Referral
 async function buyToken() {
     if (!userAccount) return alert("Connect your wallet first!");
+    
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
+
     if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB.");
 
     let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
+    
     try {
         await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
             from: userAccount,
@@ -45,14 +48,6 @@ async function buyToken() {
         console.error(error);
         alert("Transaction failed!");
     }
-}
-
-// 5️⃣ Copy Referral Link
-function copyReferralLink() {
-    let refText = document.getElementById("refLink").innerText;
-    navigator.clipboard.writeText(refText).then(() => {
-        alert("🔗 Referral link copied!");
-    });
 }
 
 // 6️⃣ Update Token Amount When BNB Input Changes
