@@ -29,74 +29,39 @@ async function claimAirdrop() {
 
 // 3️⃣ Buy Token (Presale) dengan Referral
 async function buyToken() {
-    if (!userAccount) return alert("Connect wallet first!");
-
+    if (!userAccount) return alert("Connect your wallet first!");
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     let bnbAmount = document.getElementById("bnbAmount").value;
-
-    // Validasi jumlah BNB yang dimasukkan
-    if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB");
-
+    
+    if (bnbAmount < 0.01) return alert("Minimum purchase is 0.01 BNB.");
+    
     let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
 
-    // Cek saldo BNB pengguna
-    const balance = await web3.eth.getBalance(userAccount);
-    const userBalance = web3.utils.fromWei(balance, "ether");
-    if (parseFloat(userBalance) < parseFloat(bnbAmount)) {
-        return alert("Insufficient BNB balance");
+    // Cek status presale (Opsional)
+    const saleInfo = await contract.methods.viewSale().call();
+    const currentBlock = await web3.eth.getBlockNumber();
+    
+    if (currentBlock < saleInfo.StartBlock || currentBlock > saleInfo.EndBlock) {
+        return alert("Token sale is not active right now.");
     }
 
-    // Cek apakah presale aktif
     try {
-        const saleInfo = await contract.methods.viewSale().call();
-        console.log("Sale Info:", saleInfo); // Debug sale info
-        const currentBlock = await web3.eth.getBlockNumber();
-
-        // Pastikan sale aktif (misalnya sale dimulai setelah blok tertentu)
-        if (currentBlock < saleInfo.StartBlock || currentBlock > saleInfo.EndBlock) {
-            return alert("Token sale is not active right now.");
-        }
-    } catch (error) {
-        console.error("Error checking sale status:", error);
-        return alert("Failed to check sale status.");
-    }
-
-    // Debug untuk memverifikasi nilai yang dikirim
-    console.log("Sending transaction with the following values:");
-    console.log(`BNB Amount: ${bnbAmount}`);
-    console.log(`Token Amount: ${tokenAmount}`);
-    console.log(`User Account: ${userAccount}`);
-
-    // Kirim transaksi untuk membeli token
-    try {
-        const tx = {
+        console.log("Attempting to buy token...");
+        console.log(`User: ${userAccount}, Amount: ${bnbAmount} BNB, Token Amount: ${tokenAmount}`);
+        
+        const tx = await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
             from: userAccount,
-            to: contractAddress,
             value: web3.utils.toWei(bnbAmount, "ether"),
             gas: 200000,  // Tentukan gas limit
             gasPrice: web3.utils.toWei('5', 'gwei')  // Tentukan gas price
-        };
-
-        // Kirim transaksi
-        const txHash = await ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [tx]
         });
 
-        // Konfirmasi transaksi
-        alert(`✅ Transaction sent! Hash: ${txHash}`);
+        console.log("Transaction successful:", tx);
+        alert(`✅ Successfully purchased ${tokenAmount} $BWAR.`);
     } catch (error) {
-        console.error("Error during token purchase:", error);  // Menampilkan error yang lebih jelas
-        alert("Transaction failed! " + error.message);  // Menampilkan pesan error
+        console.error("Error during transaction:", error);
+        alert("Transaction failed! " + error.message);  // Tampilkan pesan error lebih spesifik
     }
-}
-
-// 4️⃣ Generate Referral Link
-async function generateReferralLink() {
-    if (!userAccount) return alert("Connect wallet first!");
-    
-    let refLink = `${window.location.origin}?ref=${userAccount}`;
-    document.getElementById("refLink").innerText = refLink;
 }
 
 // 5️⃣ Copy Referral Link
