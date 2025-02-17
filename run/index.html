@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DApp Multi-Wallet</title>
+    <title>Crypto Wallet Connection & Transaction</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
-    <script type="module" src="app.js"></script>
 </head>
 <body>
-    <h1>DApp Multi-Wallet</h1>
-    <button id="connectMetaMask">🔗 Hubungkan MetaMask</button>
-    <button id="connectWalletConnect">🔗 Hubungkan WalletConnect</button>
-    <p id="walletStatus">Wallet belum terhubung.</p>
-    <input type="text" id="refWallet" placeholder="Alamat Referral" readonly>
-    <button id="claimAirdrop">🎁 Klaim Airdrop</button>
-    <input type="number" id="bnbAmount" placeholder="Jumlah BNB">
-    <p>Token yang diterima: <span id="tokenAmount">0</span></p>
-    <button id="buyToken">💰 Beli Token</button>
-    <button id="generateRef">🔗 Buat Link Referral</button>
-    <p id="refLink">Referral Link akan muncul di sini</p>
-    <button id="copyRef">📋 Salin Referral</button>
+    <h2>🔗 Wallet Connection</h2>
+    <button id="connectMetaMask">Connect MetaMask</button>
+    <button id="connectWalletConnect">Connect WalletConnect</button>
+    <button id="disconnectWallet">Disconnect Wallet</button>
+    <p id="walletAddress">🔗 Wallet: Not Connected</p>
+
+    <h2>🎁 Claim Airdrop</h2>
+    <button id="claimAirdrop">Claim Airdrop</button>
+
+    <h2>💰 Buy Tokens</h2>
+    <input type="number" id="bnbAmount" placeholder="Enter BNB Amount">
+    <p>Estimated Tokens: <span id="tokenAmount">0</span></p>
+    <button id="buyToken">Buy Tokens</button>
+
+    <h2>🔗 Referral System</h2>
+    <input type="text" id="refWallet" placeholder="Enter Referrer Wallet">
+    <button id="generateRef">Generate Referral Link</button>
+    <p>Referral Link: <span id="refLink"></span></p>
+    <button id="copyRef">Copy Referral Link</button>
+
+    <!-- Import JavaScript -->
+    <script type="module" src="wallet_connection.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
