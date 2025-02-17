@@ -30,7 +30,7 @@ async function connectWalletConnect() {
             projectId: "2891d08b2b53e94b9c8ec031af88d6a9",
             showQrModal: true,
             chains: [56], // Binance Smart Chain (BSC)
-            rpcMap: { 56: "https://bsc-dataseed1.binance.org/" }
+            rpcMap: { 56: "https://rpc.ankr.com/bsc" }
         });
 
         await provider.connect();
