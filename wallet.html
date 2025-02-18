@@ -3,149 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uji Koneksi MetaMask & WalletConnect</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider/dist/umd/index.min.js"></script>
+    <title>AI Chatbot - WhatsApp Style</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #e5ddd5; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .chat-container { width: 360px; height: 600px; background: #fff; display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .chat-header { background: #075e54; color: #fff; padding: 15px; text-align: center; font-weight: bold; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; }
+        .chat-bubble { max-width: 75%; padding: 8px 12px; margin: 5px; border-radius: 10px; font-size: 14px; line-height: 1.4; }
+        .user { background: #dcf8c6; align-self: flex-end; }
+        .bot { background: #fff; align-self: flex-start; border: 1px solid #ddd; }
+        .chat-footer { display: flex; padding: 10px; background: #f1f1f1; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px; background: #25d366; color: white; border: none; border-radius: 5px; margin-left: 5px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <h2>🔗 Uji Koneksi Wallet</h2>
-
-    <!-- Tombol Koneksi -->
-    <button id="connectMetaMask">🔗 Connect MetaMask</button>
-    <button id="connectWalletConnect">🔗 Connect WalletConnect</button>
-    <p id="walletStatus">⛔ Wallet belum terhubung</p>
-
-    <h3>💰 Klaim Airdrop</h3>
-    <button id="claimAirdrop">🚀 Klaim Airdrop</button>
-
-    <h3>💵 Beli Token (Presale)</h3>
-    <label for="bnbAmount">Masukkan jumlah BNB:</label>
-    <input type="number" id="bnbAmount" step="0.01" min="0.01">
-    <p>Token yang akan didapatkan: <span id="tokenAmount">0</span> $BWAR</p>
-    <button id="buyToken">💳 Beli Token</button>
-
-    <h3>🔗 Referral</h3>
-    <p>Referral Anda: <span id="refLink">Belum dibuat</span></p>
-    <button id="generateRef">🎁 Buat Referral</button>
-    <button id="copyRef">📋 Salin Referral</button>
+    <div class="chat-container">
+        <div class="chat-header">AI Chatbot</div>
+        <div id="chatbox" class="chat-body"></div>
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Ketik pesan..." onkeypress="handleKeyPress(event)">
+            <button id="sendBtn">Kirim</button>
+        </div>
+    </div>
 
     <script>
-        const contractAddress = "0x857C588260DDD9934F40c90BC41a1FA4Da2e8b31"; 
-        const contractABI = [ /* MASUKKAN ABI DI SINI */ ]; 
-
-        let web3;
-        let userAccount = null;
-        let provider;
-        let referrer = null;
-
-        // Konfigurasi WalletConnect v2
-        const walletConnectProvider = new WalletConnectProvider.default({
-            rpc: { 56: "https://bsc-dataseed.binance.org/" } // Binance Smart Chain
-        });
-
-        // 1️⃣ Ambil referral dari URL
-        function getReferrerFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            referrer = urlParams.get("ref");
+        document.getElementById("sendBtn").addEventListener("click", sendMessage);
+        
+        function handleKeyPress(event) {
+            if (event.key === "Enter") sendMessage();
         }
 
-        // 2️⃣ Fungsi koneksi wallet (MetaMask & WalletConnect)
-        async function connectWallet(option) {
-            if (option === "metamask") {
-                if (window.ethereum) {
-                    provider = window.ethereum;
-                    web3 = new Web3(provider);
-                    try {
-                        const accounts = await provider.request({ method: "eth_requestAccounts" });
-                        userAccount = accounts[0];
-                        document.getElementById("walletStatus").innerText = `✅ Terhubung: ${userAccount}`;
-                    } catch (error) {
-                        console.error("User menolak koneksi wallet");
-                    }
-                } else {
-                    alert("MetaMask tidak terdeteksi, silakan instal MetaMask.");
-                }
-            } else if (option === "walletconnect") {
-                provider = walletConnectProvider;
-                await provider.enable();
-                web3 = new Web3(provider);
-                const accounts = await web3.eth.getAccounts();
-                userAccount = accounts[0];
-                document.getElementById("walletStatus").innerText = `✅ Terhubung: ${userAccount}`;
+        async function sendMessage() {
+            let userInput = document.getElementById("userInput").value.trim();
+            if (!userInput) return;
 
-                // Handle disconnect event
-                provider.on("disconnect", () => {
-                    alert("WalletConnect terputus");
-                    location.reload();
-                });
-            }
-        }
+            let chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class="chat-bubble user">${userInput}</div>`;
+            document.getElementById("userInput").value = "";
+            chatbox.scrollTop = chatbox.scrollHeight;
 
-        // 3️⃣ Klaim Airdrop
-        async function claimAirdrop() {
-            if (!userAccount) return alert("Hubungkan wallet terlebih dahulu!");
-            const contract = new web3.eth.Contract(contractABI, contractAddress);
             try {
-                await contract.methods.getAirdrop(userAccount).send({ from: userAccount });
-                alert("🎉 Airdrop berhasil diklaim!");
-            } catch (error) {
-                console.error(error);
-                alert("Airdrop gagal diklaim!");
-            }
-        }
-
-        // 4️⃣ Beli Token
-        async function buyToken() {
-            if (!userAccount) return alert("Hubungkan wallet terlebih dahulu!");
-            const contract = new web3.eth.Contract(contractABI, contractAddress);
-            let bnbAmount = document.getElementById("bnbAmount").value;
-            if (bnbAmount < 0.01) return alert("Minimal pembelian adalah 0.01 BNB.");
-
-            let tokenAmount = bnbAmount * 10000000; // 1 BNB = 10,000,000 $BWAR
-            try {
-                await contract.methods.tokenSale(userAccount, referrer || "0x0000000000000000000000000000000000000000").send({
-                    from: userAccount,
-                    value: web3.utils.toWei(bnbAmount, "ether")
+                let response = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer YOUR_OPENAI_API_KEY"
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [{ role: "user", content: userInput }]
+                    })
                 });
-                alert(`✅ Berhasil membeli ${tokenAmount} $BWAR.`);
+
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                let data = await response.json();
+                let botReply = data.choices[0].message.content;
+
+                chatbox.innerHTML += `<div class="chat-bubble bot">${botReply}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+
             } catch (error) {
-                console.error(error);
-                alert("Transaksi gagal!");
+                chatbox.innerHTML += `<div class="chat-bubble bot" style="color: red;">Error: ${error.message}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
             }
         }
-
-        // 5️⃣ Buat Link Referral
-        async function generateReferralLink() {
-            if (!userAccount) return alert("Hubungkan wallet terlebih dahulu!");
-            let refLink = `${window.location.origin}?ref=${userAccount}`;
-            document.getElementById("refLink").innerText = refLink;
-        }
-
-        // 6️⃣ Salin Referral Link
-        function copyReferralLink() {
-            let refText = document.getElementById("refLink").innerText;
-            navigator.clipboard.writeText(refText).then(() => {
-                alert("🔗 Referral link disalin!");
-            });
-        }
-
-        // 7️⃣ Update jumlah token saat input BNB berubah
-        document.getElementById("bnbAmount").addEventListener("input", function() {
-            let bnb = this.value;
-            let tokenAmount = bnb * 10000000; // 1 BNB = 10,000,000 $BWAR
-            document.getElementById("tokenAmount").innerText = tokenAmount.toLocaleString();
-        });
-
-        // 8️⃣ Tambahkan event listener untuk tombol koneksi wallet
-        document.getElementById("connectMetaMask").addEventListener("click", () => connectWallet("metamask"));
-        document.getElementById("connectWalletConnect").addEventListener("click", () => connectWallet("walletconnect"));
-        document.getElementById("claimAirdrop").addEventListener("click", claimAirdrop);
-        document.getElementById("buyToken").addEventListener("click", buyToken);
-        document.getElementById("generateRef").addEventListener("click", generateReferralLink);
-        document.getElementById("copyRef").addEventListener("click", copyReferralLink);
-
-        // 🔟 Ambil referral dari URL saat halaman dimuat
-        window.onload = getReferrerFromURL;
     </script>
 </body>
 </html>
